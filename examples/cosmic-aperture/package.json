@@ -1,0 +1,23 @@
+{
+  "name": "@pulsar/cosmic-aperture",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "sync": "pnpm astro sync"
+  },
+  "devDependencies": {
+    "@astrojs/tailwind": "^3.1.2",
+    "@fontsource/inter": "^4.5.15",
+    "@pulsar/docs": "workspace:*",
+    "astro": "^2.4.5",
+    "autoprefixer": "^10.4.14",
+    "postcss": "^8.4.23",
+    "pulsar": "workspace:*",
+    "tailwindcss": "^3.0.24"
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "name": "root",
+  "version": "0.0.0",
+  "workspaces": [
+    "docs",
+    "examples/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "------------------------------------------------------------------------------": "",
+    "build": "turbo run build",
+    "-------------------------------------------------------------------------------": "",
+    "typecheck": "turbo run typecheck",
+    "--------------------------------------------------------------------------------": "",
+    "lint": "eslint --cache \"./packages/*/src/**/*.ts\"",
+    "lint:fix": "eslint \"./packages/*/src/**/*.ts\" --fix --cache",
+    "format": "prettier --write \"**/*.{ts,json,md,yml,yaml}\"",
+    "---------------------------------------------------------------------------------": "",
+    "test": "turbo run test",
+    "aggregate": "node ./scripts/aggregate.mjs",
+    "coverage:gen": "pnpx nyc report --reporter html -t .nyc_output --report-dir coverage",
+    "coverage:view": "pnpm coverage:gen --reporter text",
+    "----------------------------------------------------------------------------------": "",
+    "prepare": "husky install",
+    "-----------------------------------------------------------------------------------": "",
+    "prepublishOnly": "pnpm run build",
+    "release": "pnpm run build && changeset publish",
+    "version": "changeset version && pnpm install --no-frozen-lockfile && pnpm run format"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^0.38.6",
+    "@changesets/changelog-github": "^0.4.8",
+    "@changesets/cli": "^2.26.1",
+    "@commitlint/cli": "^17.6.3",
+    "@commitlint/config-conventional": "^17.6.3",
+    "eslint": "^8.40.0",
+    "eslint-plugin-astro": "^0.27.0",
+    "husky": "^8.0.3",
+    "nano-staged": "^0.8.0",
+    "prettier": "^2.8.8",
+    "turbo": "1.9.6"
+  },
+  "nano-staged": {
+    "*.{ts,tsx,md,mdx,js,jsx,html,css,json}": [
+      "prettier --write"
+    ]
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "extends": "@pulsar/tsconfig/tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": "."
+  },
+  "include": [
+    "src",
+    "./esbuild-plugin-astro.ts",
+    "vitest.config.ts",
+    "package.json",
+    "tsconfig.json"
+  ],
+  "exclude": ["node_modules", "dist"]
+}

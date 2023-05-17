@@ -1,0 +1,108 @@
+{
+  "name": "@pulsar/docs",
+  "type": "module",
+  "version": "0.0.1",
+  "description": "A Pulsar theme for documentation site",
+  "author": "Ernest Nkansah-Badu <ernestjbadu@outlook.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/Ernxst/pulsar#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Ernxst/pulsar.git",
+    "directory": "packages/theme-docs"
+  },
+  "bugs": {
+    "url": "https://github.com/Ernxst/pulsar/issues"
+  },
+  "keywords": [
+    "astro",
+    "docs"
+  ],
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "import": "./index.js"
+    },
+    "./components": {
+      "types": "./components/index.d.ts",
+      "import": "./components/index.js"
+    },
+    "./components/*.astro": {
+      "types": "./components/*.astro",
+      "import": "./components/*.astro"
+    },
+    "./layouts": {
+      "types": "./layouts/index.d.ts",
+      "import": "./layouts/index.js"
+    },
+    "./layouts/*.astro": {
+      "types": "./layouts/*.astro",
+      "import": "./layouts/*.astro"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./index.js",
+  "module": "./index.js",
+  "types": "./index.d.ts",
+  "typesVersions": {
+    "*": {
+      ".": [
+        "./index.d.ts"
+      ],
+      "components": [
+        "./components/index.d.ts"
+      ],
+      "layouts": [
+        "./layouts/index.d.ts"
+      ],
+      "components/*.astro": [
+        "components/*.astro"
+      ],
+      "layouts/*.astro": [
+        "layouts/*.astro"
+      ]
+    }
+  },
+  "files": [
+    ".",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=v14.16.0",
+    "pnpm": ">=8.2.0"
+  },
+  "scripts": {
+    "-------------------------------------------------------------------------------": "",
+    "lint:pkg": "publint",
+    "--------------------------------------------------------------------------------": "",
+    "typecheck": "tsc --noEmit",
+    "---------------------------------------------------------------------------------": "",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@pulsar/tsconfig": "workspace:*",
+    "@vitest/coverage-istanbul": "0.31.0",
+    "publint": "0.1.11",
+    "typescript": "5.0.4",
+    "vitest": "0.31.0"
+  },
+  "dependencies": {
+    "zod": "3.21.4"
+  },
+  "peerDependencies": {
+    "astro": "^2.4.0",
+    "pulsar": "^0.0.1"
+  },
+  "peerDependenciesMeta": {
+    "astro": {
+      "optional": false
+    },
+    "pulsar": {
+      "optional": false
+    }
+  }
+}

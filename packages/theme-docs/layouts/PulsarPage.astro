@@ -1,0 +1,59 @@
+---
+import type { CollectionEntry } from "astro:content";
+import BaseLayout from "./BaseLayout.astro";
+import DocsLayout from "./DocsLayout.astro";
+import PageLayout from "./PageLayout.astro";
+import type { Page } from "config";
+
+// todo: the directory name we can infer
+export interface Props {
+  page: CollectionEntry<any>;
+}
+
+const { page } = Astro.props;
+const { Content, headings } = await page.render();
+const config: Page = page.data;
+
+console.log(headings);
+
+const isDocs = config.type === "docs";
+const pageTitle = config.title ?? headings[0]?.text ?? "Untitled";
+
+// TODO: Get these from site config
+const showNavbar = false;
+const showFooter = false;
+---
+
+<BaseLayout pageTitle={pageTitle}>
+  {
+    showNavbar && (
+      <nav>
+        <slot name="navbar" />
+      </nav>
+    )
+  }
+  {
+    isDocs && (
+      <DocsLayout>
+        <Content />
+        <slot />
+      </DocsLayout>
+    )
+  }
+  {
+    !isDocs && (
+      <PageLayout>
+        <Content />
+        <slot />
+      </PageLayout>
+    )
+  }
+
+  {
+    showFooter && (
+      <footer>
+        <slot name="footer" />
+      </footer>
+    )
+  }
+</BaseLayout>

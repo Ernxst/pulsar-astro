@@ -1,0 +1,74 @@
+---
+interface Image {
+  src: string;
+  alt: string;
+}
+
+export interface Props {
+  canonicalUrl: string;
+  site: {
+    title: string;
+    lang: string;
+    image?: Image;
+  };
+  page: {
+    title: string;
+    description: string;
+  };
+  og?: {
+    image?: Image;
+    locale?: string;
+  };
+  twitter?: {
+    site?: string;
+    image?: Image;
+  };
+}
+
+const { site, page, og = {}, twitter = {}, canonicalUrl } = Astro.props;
+const ogImg = og.image ?? site.image;
+const twitterImg = twitter.image ?? site.image;
+---
+
+<!-- Page Metadata -->
+<link rel="canonical" href={canonicalUrl} />
+
+<!-- OpenGraph Tags -->
+<meta property="og:title" content={page.title} />
+<meta property="og:type" content="article" />
+<meta property="og:url" content={canonicalUrl} />
+<meta property="og:locale" content={og.locale ?? site.lang} />
+{
+  ogImg && (
+    <>
+      <meta property="og:image" content={new URL(ogImg.src, Astro.site)} />
+      <meta property="og:image:alt" content={ogImg.alt} />
+    </>
+  )
+}
+<meta name="description" property="og:description" content={page.description} />
+<meta property="og:site_name" content={site.title} />
+
+<!-- Twitter Tags -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content={twitter.site} />
+<meta name="twitter:title" content={page.title} />
+<meta name="twitter:description" content={page.description} />
+{
+  twitterImg && (
+    <>
+      <meta
+        property="twitter:image"
+        content={new URL(twitterImg.src, Astro.site)}
+      />
+      <meta property="twitter:image:alt" content={twitterImg.alt} />
+    </>
+  )
+}
+
+<!--
+  TODO: Add json+ld data, maybe https://schema.org/APIReference makes sense?
+  Docs: https://developers.google.com/search/docs/advanced/structured-data/intro-structured-data
+  https://www.npmjs.com/package/schema-dts seems like a great resource for implementing this.
+  Even better, there's a React component that integrates with `schema-dts`: https://github.com/google/react-schemaorg
+-->

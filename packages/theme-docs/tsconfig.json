@@ -1,0 +1,9 @@
+{
+  "extends": "@pulsar/tsconfig/tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "types": ["astro/client"]
+  },
+  "include": ["./*", "./**/*"],
+  "exclude": ["node_modules"]
+}

@@ -1,0 +1,79 @@
+{
+  "name": "pulsar",
+  "type": "module",
+  "version": "0.0.1",
+  "description": "Simple, powerful and flexible SSG library built on top of Astro.",
+  "author": "Ernest Nkansah-Badu <ernestjbadu@outlook.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/Ernxst/pulsar#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Ernxst/pulsar.git",
+    "directory": "packages/pulsar"
+  },
+  "bugs": {
+    "url": "https://github.com/Ernxst/pulsar/issues"
+  },
+  "keywords": [
+    "astro",
+    "ssg",
+    "typescript"
+  ],
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "typesVersions": {
+    "*": {
+      ".": [
+        "./dist/index.d.ts"
+      ]
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=v14.16.0",
+    "pnpm": ">=8.2.0"
+  },
+  "scripts": {
+    "------------------------------------------------------------------------------": "",
+    "build": "tsup --clean && publint",
+    "-------------------------------------------------------------------------------": "",
+    "typecheck": "tsc --noEmit",
+    "---------------------------------------------------------------------------------": "",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@pulsar/tsconfig": "workspace:*",
+    "@vitest/coverage-istanbul": "0.31.0",
+    "publint": "0.1.11",
+    "tsup": "6.7.0",
+    "typescript": "5.0.4",
+    "vitest": "0.31.0"
+  },
+  "dependencies": {
+    "zod": "3.21.4"
+  },
+  "peerDependencies": {
+    "astro": "^2.4.0"
+  },
+  "peerDependenciesMeta": {
+    "astro": {
+      "optional": false
+    }
+  }
+}

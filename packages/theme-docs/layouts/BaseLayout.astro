@@ -1,0 +1,54 @@
+---
+import type { Props as HeadCommonProps } from "../components/HeadCommon.astro";
+import HeadCommon from "../components/HeadCommon.astro";
+import type { Props as HeadSEOProps } from "../components/HeadSEO.astro";
+import HeadSEO from "../components/HeadSEO.astro";
+import { useConfig, useConfigHandler } from "../config/app/lib";
+
+export interface Props {
+  pageTitle: string;
+  lang?: string;
+}
+
+const config = await useConfig();
+const defaultLocale = config.site.defaultLocale;
+const { pageTitle, lang = defaultLocale } = Astro.props;
+
+const pathname = Astro.url.pathname;
+const canonicalURL = Astro.url;
+
+const handler = useConfigHandler(config);
+const formattedTitle = await handler.title({ pathname, title: pageTitle });
+const formattedDescription = await handler.description({
+  pathname,
+  title: pageTitle,
+});
+
+const headCommonProps: HeadCommonProps = {};
+
+const headSeoProps: HeadSEOProps = {
+  site: {
+    title: config.site.siteTitle,
+    lang,
+  },
+  page: {
+    title: formattedTitle,
+    description: formattedDescription,
+  },
+  og: config.seo.openGraph,
+  twitter: config.seo.twitter,
+  canonicalUrl: canonicalURL.toString(),
+};
+---
+
+<html lang={lang} dir={config.site.dir}>
+  <head>
+    <HeadCommon {...headCommonProps} />
+    <title>{formattedTitle}</title>
+    <HeadSEO {...headSeoProps} />
+  </head>
+
+  <body>
+    <slot />
+  </body>
+</html>

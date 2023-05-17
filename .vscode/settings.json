@@ -1,0 +1,37 @@
+{
+  "[json]": {
+    "editor.formatOnSave": false
+  },
+  "[markdown]": {
+    "editor.formatOnSave": false
+  },
+  "cSpell.words": [
+    "commitlint",
+    "linkcode",
+    "pnpm",
+    "prerelease",
+    "publint",
+    "repro",
+    "tsup",
+    "typecheck",
+    "vitest"
+  ],
+  "editor.formatOnSave": false,
+  "editor.tabSize": 2,
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "astro"
+  ],
+  "explorer.compactFolders": false,
+  "explorer.sortOrder": "filesFirst",
+  "markdownlint.config": {
+    "no-bare-urls": false,
+    "no-inline-html": false
+  },
+  "typescript.tsdk": "./node_modules/typescript/lib",
+  "workbench.editor.labelFormat": "short",
+  "workbench.tree.indent": 20
+}

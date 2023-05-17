@@ -1,0 +1,52 @@
+---
+import ThemeHandler from "./ThemeScript.astro";
+
+export interface Props {
+  /**
+   * Favicon URL. This will add a `<link rel="icon">` tag
+   * to the head of the page.
+   *
+   * @default "/favicon.svg"
+   */
+  favicon?: string;
+  /**
+   * Whether theme switching is enabled. This will inline
+   * a script to handle storing the theme in local storage
+   * and applying the theme on page load.
+   *
+   * @default true
+   */
+  themeSwitch?: boolean;
+  /**
+   * Sitemap URL. This will add a `<link rel="sitemap">` tag
+   * to the head of the page.
+   *
+   * @default "/sitemap.xml"
+   */
+  sitemap?: string;
+}
+
+const {
+  favicon = "/favicon.svg",
+  themeSwitch = true,
+  sitemap = "/sitemap.xml",
+} = Astro.props;
+---
+
+<!-- Global Metadata -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width" />
+<meta name="generator" content={Astro.generator} />
+
+<link rel="icon" type="image/svg+xml" href={favicon} />
+<link rel="sitemap" href={sitemap} />
+
+<!-- Scrollable a11y code helper -->
+<script is:inline>
+  Array.from(document.getElementsByTagName("pre")).forEach((element) => {
+    element.setAttribute("tabindex", "0");
+  });
+</script>
+
+<!-- This is intentionally inlined to avoid FOUC -->
+{themeSwitch && <ThemeHandler />}
