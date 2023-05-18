@@ -16,8 +16,7 @@
   },
   "keywords": [
     "astro",
-    "ssg",
-    "typescript"
+    "ssg"
   ],
   "sideEffects": false,
   "publishConfig": {
@@ -25,19 +24,19 @@
   },
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "require": "./dist/index.cjs",
-      "import": "./dist/index.js"
+      "types": "./src/index.d.ts",
+      "require": "./src/index.cjs",
+      "import": "./src/index.js"
     },
     "./package.json": "./package.json"
   },
-  "main": "dist/index.cjs",
-  "module": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "src/index.js",
+  "module": "src/index.js",
+  "types": "src/index.d.ts",
   "typesVersions": {
     "*": {
       ".": [
-        "./dist/index.d.ts"
+        "./src/index.d.ts"
       ]
     }
   },
