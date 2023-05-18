@@ -1,0 +1,32 @@
+---
+import LeftSidebar from "../components/LeftSidebar/LeftSidebar.astro";
+---
+
+<div class="docs-page">
+  <aside>
+    <LeftSidebar />
+  </aside>
+  <main>
+    <slot />
+  </main>
+</div>
+
+<style>
+  .docs-page {
+    display: flex;
+    height: 100%;
+  }
+
+  aside {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    min-width: 300px;
+    border-right: 1px solid #eaeaea;
+  }
+
+  main {
+    flex: 1;
+    padding: 0 20px;
+  }
+</style>

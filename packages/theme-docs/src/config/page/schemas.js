@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+// TODO: This should go in the _meta.json config
 const SidebarSection = z.object({
   /**
    * The title of the section - this is what will be displayed in the sidebar
@@ -20,7 +21,7 @@ const SidebarSection = z.object({
   navbar: z.boolean().default(true),
 });
 
-const Sidebar = z.array(SidebarSection).default([]);
+const _Sidebar = z.array(SidebarSection).default([]);
 
 const PageBase = z.object({
   title: z.string().optional(),
@@ -29,7 +30,7 @@ const PageBase = z.object({
 
 export const DocsPageSchema = PageBase.merge(
   z.object({
-    type: z.enum(["docs"]).optional(),
+    type: z.enum(["docs"]).optional().default("docs"),
     editInGitHub: z.boolean().optional().default(true),
   })
 );
@@ -45,18 +46,3 @@ export const PulsarCollection = z
   .default({
     type: "docs",
   });
-
-/**
- * @type {{[K in keyof z.infer<typeof DocsPageSchema>]: z.infer<typeof DocsPageSchema>[K]} & {}}
- */
-let docs;
-
-/**
- * @type {{[K in keyof z.infer<typeof MainPageSchema>]: z.infer<typeof MainPageSchema>[K]} & {}}
- */
-let main;
-
-/**
- * @type {{[K in keyof z.infer<typeof PulsarCollection>]: z.infer<typeof PulsarCollection>[K]} & {}}
- */
-let pulsar;

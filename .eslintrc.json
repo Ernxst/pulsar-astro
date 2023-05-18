@@ -11,6 +11,9 @@
       "parserOptions": {
         "parser": "@typescript-eslint/parser",
         "extraFileExtensions": [".astro"]
+      },
+      "rules": {
+        "multiline-ternary": "off"
       }
     }
   ],

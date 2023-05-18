@@ -1,0 +1,55 @@
+---
+import { z } from "zod";
+import type { MarkdownInstance } from "astro";
+import type { Page } from "../../config/page";
+import { buildSections } from "./sidebar.js";
+import SidebarSection from "./SidebarSection.astro";
+
+const rawConfig = await Astro.glob(
+  "../../../../../**/src/content/**/_meta.json"
+);
+const content = await Astro.glob<MarkdownInstance<Page>>(
+  "../../../../../**/src/content/**/*.{md,mdx}"
+);
+
+// TODO: Support _meta.json files - match filename to keys in json file
+
+const processed = rawConfig.map((file) => file.default);
+
+const headerSchema = z.object({
+  title: z.string(),
+  type: z.enum(["hidden"]).optional(),
+});
+const metaSchema = z.record(z.union([z.string(), headerSchema]));
+const allConfigs = z.array(metaSchema);
+const _parsed = allConfigs.parse(processed);
+
+const sections = buildSections(content);
+---
+
+<div class="sidebar">
+  <nav aria-labelledby="grid-left">
+    <ul class="nav-groups">
+      {
+        Object.values(sections).map((child) => (
+          <li>
+            <SidebarSection {...child} depth={0} />
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+</div>
+
+<style>
+  .sidebar {
+    height: 100%;
+    padding: 1rem;
+  }
+
+  .nav-groups {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+</style>

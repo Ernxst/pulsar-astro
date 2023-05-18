@@ -9,8 +9,8 @@ export default defineConfig({
       enabled: true,
       all: true,
       reporter: ["html", "text-summary", "json"],
-      include: ["src/**/*"],
-      exclude: ["src/**/__test__/**", "src/**/dump.ts", "src/**/dump/**"],
+      include: ["**/*"],
+      exclude: ["**/__test__/**", "**/*.astro", "node_modules/**/*"],
     },
   },
 });

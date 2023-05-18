@@ -2,7 +2,7 @@
 type: "docs"
 ---
 
-# Pulsar
+# Introduction
 
 **Pulsar** is a SSG library built on top of [Astro](https://astro.build), that supercharges you build content focused websites. It has all the great features from Astro.js, plus extra power to create Markdown-based content with ease.
 
@@ -17,10 +17,8 @@ Out of the box, you get:
 - Navbar, sidebar and social links
 - A documentation and regular page layout
 
-
 ## Quick Start
 
 To start using Pulsar, you need to first select a theme:
-
 
 The is currently no support for custom theming. Contributions are always welcome to begin supporting this.

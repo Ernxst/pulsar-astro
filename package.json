@@ -12,13 +12,13 @@
     "-------------------------------------------------------------------------------": "",
     "typecheck": "turbo run typecheck",
     "--------------------------------------------------------------------------------": "",
-    "lint": "eslint --cache \"./packages/*/src/**/*.ts\"",
-    "lint:fix": "eslint \"./packages/*/src/**/*.ts\" --fix --cache",
-    "format": "prettier --write \"**/*.{ts,json,md,yml,yaml}\"",
+    "lint": "eslint --cache \"./packages/*/src/**/*.{ts,js,astro}\"",
+    "lint:fix": "eslint \"./packages/*/src/**/*.{ts,js,astro}\" --fix --cache",
+    "format": "prettier --write \"**/*.{ts,js,astro,json,md,yml,yaml}\" --plugin-search-dir=.",
     "---------------------------------------------------------------------------------": "",
     "test": "turbo run test",
     "aggregate": "node ./scripts/aggregate.mjs",
-    "coverage:gen": "pnpx nyc report --reporter html -t .nyc_output --report-dir coverage",
+    "coverage:gen": "pnpm dlx nyc report --reporter html -t .nyc_output --report-dir coverage",
     "coverage:view": "pnpm coverage:gen --reporter text",
     "----------------------------------------------------------------------------------": "",
     "prepare": "husky install",
@@ -38,11 +38,13 @@
     "husky": "^8.0.3",
     "nano-staged": "^0.8.0",
     "prettier": "^2.8.8",
+    "prettier-plugin-astro": "0.8.1",
     "turbo": "1.9.6"
   },
   "nano-staged": {
     "*.{ts,tsx,md,mdx,js,jsx,html,css,json}": [
-      "prettier --write"
+      "prettier --write",
+      "eslint --cache --fix"
     ]
   }
 }

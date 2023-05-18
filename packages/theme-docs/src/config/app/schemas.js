@@ -87,9 +87,9 @@ export const DocsConfigSchema = z.object({
   site: Site,
   i18n: I18n.default({}),
 
-  navbar: Navbar,
+  navbar: Navbar.optional().default({}),
 
-  footer: Footer,
+  footer: Footer.optional().default({}),
 
   /**
    * Customise the navigation buttons that appear at the bottom of each

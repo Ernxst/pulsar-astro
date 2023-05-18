@@ -24,46 +24,46 @@
   },
   "exports": {
     ".": {
-      "types": "./index.d.ts",
-      "import": "./index.js"
+      "types": "./src/index.d.ts",
+      "import": "./src/index.js"
     },
     "./components": {
-      "types": "./components/index.d.ts",
-      "import": "./components/index.js"
+      "types": "./src/components/index.d.ts",
+      "import": "./src/components/index.js"
     },
     "./components/*.astro": {
-      "types": "./components/*.astro",
-      "import": "./components/*.astro"
+      "types": "./src/components/*.astro",
+      "import": "./src/components/*.astro"
     },
     "./layouts": {
-      "types": "./layouts/index.d.ts",
-      "import": "./layouts/index.js"
+      "types": "./src/layouts/index.d.ts",
+      "import": "./src/layouts/index.js"
     },
     "./layouts/*.astro": {
-      "types": "./layouts/*.astro",
-      "import": "./layouts/*.astro"
+      "types": "./src/layouts/*.astro",
+      "import": "./src/layouts/*.astro"
     },
-    "./package.json": "./package.json"
+    "./package.json": "./src/package.json"
   },
-  "main": "./index.js",
-  "module": "./index.js",
-  "types": "./index.d.ts",
+  "main": "./src/index.js",
+  "module": "./src/index.js",
+  "types": "./src/index.d.ts",
   "typesVersions": {
     "*": {
       ".": [
-        "./index.d.ts"
+        "./src/index.d.ts"
       ],
       "components": [
-        "./components/index.d.ts"
+        "./src/components/index.d.ts"
       ],
       "layouts": [
-        "./layouts/index.d.ts"
+        "./src/layouts/index.d.ts"
       ],
       "components/*.astro": [
-        "components/*.astro"
+        ".src/components/*.astro"
       ],
       "layouts/*.astro": [
-        "layouts/*.astro"
+        "./src/layouts/*.astro"
       ]
     }
   },
@@ -83,16 +83,6 @@
     "---------------------------------------------------------------------------------": "",
     "test": "vitest run"
   },
-  "devDependencies": {
-    "@pulsar/tsconfig": "workspace:*",
-    "@vitest/coverage-istanbul": "0.31.0",
-    "publint": "0.1.11",
-    "typescript": "5.0.4",
-    "vitest": "0.31.0"
-  },
-  "dependencies": {
-    "zod": "3.21.4"
-  },
   "peerDependencies": {
     "astro": "^2.4.0",
     "pulsar": "^0.0.1"
@@ -104,5 +94,17 @@
     "pulsar": {
       "optional": false
     }
+  },
+  "dependencies": {
+    "class-variance-authority": "^0.6.0",
+    "inflection": "^2.0.1",
+    "zod": "3.21.4"
+  },
+  "devDependencies": {
+    "@pulsar/tsconfig": "workspace:*",
+    "@vitest/coverage-istanbul": "0.31.0",
+    "publint": "0.1.11",
+    "typescript": "5.0.4",
+    "vitest": "0.31.0"
   }
 }

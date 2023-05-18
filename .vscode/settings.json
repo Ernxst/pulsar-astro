@@ -1,4 +1,7 @@
 {
+  "[astro]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
   "[json]": {
     "editor.formatOnSave": false
   },
@@ -31,6 +34,7 @@
     "no-bare-urls": false,
     "no-inline-html": false
   },
+  "prettier.documentSelectors": ["**/*.astro"],
   "typescript.tsdk": "./node_modules/typescript/lib",
   "workbench.editor.labelFormat": "short",
   "workbench.tree.indent": 20

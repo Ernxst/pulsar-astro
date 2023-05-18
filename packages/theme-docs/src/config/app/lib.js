@@ -1,28 +1,35 @@
-import fs from "node:fs";
 import { DocsConfigSchema } from "./schemas.js";
 
 export async function useConfig() {
-  let configFile;
+  const configs = import.meta.glob(
+    [
+      "../../../../../**/pulsar.config.ts",
+      "../../../../../**/pulsar.config.tsx",
+      "../../../../../**/pulsar.config.cts",
+      "../../../../../**/pulsar.config.mts",
+      "../../../../../**/pulsar.config.js",
+      "../../../../../**/pulsar.config.jsx",
+      "../../../../../**/pulsar.config.cjs",
+      "../../../../../**/pulsar.config.mjs",
+      "../../../../../**/pulsar.config.json",
+    ],
 
-  if (fs.existsSync("./pulsar.config.ts")) {
-    configFile = "/pulsar.config.ts";
-  } else if (fs.existsSync("./pulsar.config.js")) {
-    configFile = "/pulsar.config.js";
-  } else if (fs.existsSync("./pulsar.config.cjs")) {
-    configFile = "/pulsar.config.cjs";
-  } else if (fs.existsSync("./pulsar.config.mjs")) {
-    configFile = "/pulsar.config.mjs";
-  } else if (fs.existsSync("./pulsar.config.cts")) {
-    configFile = "/pulsar.config.cts";
-  } else if (fs.existsSync("./pulsar.config.mts")) {
-    configFile = "/pulsar.config.mts";
-  } else {
-    throw new Error("No config file found");
+    { eager: true }
+  );
+
+  const config = Object.entries(configs)
+    .map(([_, config]) => config.default)
+    .find(Boolean);
+
+  if (!config) {
+    throw new Error(
+      "No Pulsar config found. Please create a pulsar.config.(ts|js|json) file in the root of your project."
+    );
   }
 
-  const config = await import(configFile);
-  return config.default;
-  // return DocsConfigSchema.parse(config.default);
+  const result = DocsConfigSchema.safeParse(config);
+  if (!result.success) throw result.error;
+  return result.data;
 }
 
 /**
