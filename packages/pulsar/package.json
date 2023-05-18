@@ -51,22 +51,11 @@
   },
   "scripts": {
     "------------------------------------------------------------------------------": "",
-    "build": "tsup --clean && publint",
+    "build": "publint",
     "-------------------------------------------------------------------------------": "",
     "typecheck": "tsc --noEmit",
     "---------------------------------------------------------------------------------": "",
     "test": "vitest run"
-  },
-  "devDependencies": {
-    "@pulsar/tsconfig": "workspace:*",
-    "@vitest/coverage-istanbul": "0.31.0",
-    "publint": "0.1.11",
-    "tsup": "6.7.0",
-    "typescript": "5.0.4",
-    "vitest": "0.31.0"
-  },
-  "dependencies": {
-    "zod": "3.21.4"
   },
   "peerDependencies": {
     "astro": "^2.4.0"
@@ -75,5 +64,12 @@
     "astro": {
       "optional": false
     }
+  },
+  "devDependencies": {
+    "@pulsar/tsconfig": "workspace:*",
+    "@vitest/coverage-istanbul": "0.31.0",
+    "publint": "0.1.11",
+    "typescript": "5.0.4",
+    "vitest": "0.31.0"
   }
 }
