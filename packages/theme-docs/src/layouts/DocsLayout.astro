@@ -10,6 +10,7 @@ const { pages } = Astro.props;
 <div class="docs-page">
   <aside>
     <LeftSidebar pages={pages} />
+    <slot name="sidebar-bottom" />
   </aside>
   <main>
     <slot />

@@ -1,6 +1,4 @@
 ---
-import ThemeHandler from "./ThemeScript.astro";
-
 export interface Props {
   /**
    * Favicon URL. This will add a `<link rel="icon">` tag
@@ -26,11 +24,7 @@ export interface Props {
   sitemap?: string;
 }
 
-const {
-  favicon = "/favicon.svg",
-  themeSwitch = true,
-  sitemap = "/sitemap.xml",
-} = Astro.props;
+const { favicon = "/favicon.svg", sitemap = "/sitemap.xml" } = Astro.props;
 ---
 
 <!-- Global Metadata -->
@@ -47,6 +41,3 @@ const {
     element.setAttribute("tabindex", "0");
   });
 </script>
-
-<!-- This is intentionally inlined to avoid FOUC -->
-{themeSwitch && <ThemeHandler />}

@@ -1,0 +1,222 @@
+---
+export interface Props {
+  id: string;
+  value?: string;
+  options?: SelectOption[];
+  "aria-label": string;
+  storageKey?: string;
+}
+
+export interface SelectOption {
+  title: string;
+  className: string;
+  default?: boolean;
+}
+
+const { id, value, options = [], storageKey, ...props } = Astro.props;
+const ariaLabel = props["aria-label"];
+
+const { title, className } = options.find((opt) => opt.default) ?? {};
+const defaultText = title ?? ariaLabel;
+const defaultValue = value ?? className;
+
+const toggleId = `${id}-toggle`;
+const listboxId = `${id}-listbox`;
+
+console.log(options);
+---
+
+<script
+  define:vars={{ storageKey, defaultValue, id, toggleId, listboxId, options }}
+>
+  document.addEventListener("DOMContentLoaded", () => {
+    const container = document.getElementById(id);
+    const toggleButton = document.getElementById(toggleId);
+    const switcher = document.getElementById(listboxId);
+    const selectedText = toggleButton.querySelector(".selected-item");
+
+    const optionEls = [...switcher.querySelectorAll(".select-option")];
+    optionEls.push(...[...document.querySelectorAll(`#${listboxId} > option`)]);
+
+    optionEls.forEach((opt) => {
+      opt.addEventListener("click", (event) => {
+        const value = event.target.dataset.value;
+        setValue(value);
+
+        const evt = new Event("change", {
+          value,
+          target: container,
+          bubbles: true,
+        });
+        container.dispatchEvent(evt);
+      });
+    });
+
+    // Toggle switcher
+    toggleButton.onclick = () => {
+      const aria = toggleButton.getAttribute("aria-expanded");
+      const expanded = aria === "true" || aria === null;
+
+      toggleButton.setAttribute("aria-expanded", String(!expanded));
+      switcher.classList.toggle("hidden");
+    };
+
+    // Close switcher when clicked outside
+    document.addEventListener("click", (event) => {
+      const el = event.target;
+      const parent = el.parentElement;
+      if (
+        el !== container &&
+        !container.contains(el) &&
+        !container.contains(parent)
+      ) {
+        switcher.classList.add("hidden");
+        toggleButton.setAttribute("aria-expanded", "false");
+      }
+    });
+
+    function findOptionByClassName(className) {
+      return options.find((opt) => opt.className === className);
+    }
+
+    function setValue(className) {
+      const option = findOptionByClassName(className);
+
+      selectedText.textContent = option.title;
+
+      optionEls.forEach((el) => {
+        const option = el.dataset.value;
+        const selected = option === className;
+        el.setAttribute("aria-selected", String(selected));
+      });
+
+      container.setAttribute("value", className);
+      container.value = className;
+
+      if (storageKey) localStorage.setItem(storageKey, className);
+    }
+
+    let storedValue;
+    if (storageKey) storedValue = localStorage.getItem(storageKey);
+    if (defaultValue) setValue(storedValue ?? defaultValue);
+  });
+</script>
+
+<div id={id} class="select-container">
+  <button
+    id={toggleId}
+    class="switcher-toggle"
+    title={ariaLabel}
+    aria-expanded="false"
+    aria-haspopup="listbox"
+    aria-controls={listboxId}
+    type="button"
+  >
+    <slot name="icon" />
+    <span class="selected-item">{defaultText}</span>
+  </button>
+
+  <ul
+    class="hidden select-switcher"
+    id={listboxId}
+    tabindex="0"
+    role="listbox"
+    aria-labelledby={toggleId}
+  >
+    {
+      options.map((option) => (
+        <li
+          class="select-option"
+          role="option"
+          tabindex="-1"
+          data-value={option.className}
+          aria-selected="false"
+        >
+          <span data-value={option.className}>{option.title}</span>
+          <svg
+            class="icon"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <polyline points="20 6 9 17 4 12" />
+          </svg>
+        </li>
+      ))
+    }
+    <slot />
+  </ul>
+</div>
+
+<style>
+  * {
+    width: 100%;
+  }
+
+  .select-container {
+    position: relative;
+    --bg-colour: rgba(255, 255, 255, 0.1);
+    --border-colour: rgba(2, 2, 2, 0.25);
+  }
+
+  .switcher-toggle {
+    height: 2rem;
+    display: flex;
+    gap: 0.25rem;
+    align-items: center;
+    text-align: left;
+    padding: 0px 10px;
+  }
+
+  .switcher-toggle,
+  .select-switcher {
+    background-color: var(--bg-colour);
+    border: 1px solid var(--border-colour);
+    border-radius: 0.5rem;
+    color: var(--text-colour);
+    font-size: 12px;
+  }
+
+  .select-switcher {
+    position: absolute;
+    inset: auto auto 0 0;
+    z-index: 1;
+    bottom: calc(100% + 0.5rem);
+    padding: 6px 0;
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  .select-option {
+    padding: 6px 12px;
+    cursor: pointer;
+    white-space: nowrap;
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .icon {
+    width: 1rem;
+    height: 1rem;
+    margin-left: auto;
+    vertical-align: middle;
+    display: none;
+  }
+
+  .select-option[aria-selected="true"] {
+    pointer-events: none;
+  }
+
+  .select-option[aria-selected="true"] .icon {
+    display: inline-block;
+  }
+</style>

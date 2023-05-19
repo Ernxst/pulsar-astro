@@ -1,6 +1,10 @@
 ---
 import type { MarkdownInstance } from "astro";
 import type { Page } from "../config";
+import ThemeSwitcher, {
+  type Theme,
+} from "../components/ui/ThemeSwitcher.astro";
+import { useConfig } from "../config/app/lib";
 import BaseLayout from "./BaseLayout.astro";
 import DocsLayout from "./DocsLayout.astro";
 import PageLayout from "./PageLayout.astro";
@@ -18,12 +22,37 @@ const isDocs = config.type === "docs";
 const pageTitle = config.title ?? headings[0]?.text ?? "Untitled";
 
 // TODO: Get these from page config
-const showNavbar = false;
-const showFooter = false;
+const showNavbar = true;
+const showFooter = true;
 
 const content = await Astro.glob<MarkdownInstance<Page>>(
   "../../../../**/src/content/**/*.{md,mdx}"
 );
+
+// TODO: Should be based on site name
+const themes: Theme[] = [
+  {
+    title: "Light",
+    className: "light",
+    default: true,
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sun"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg>`,
+  },
+  {
+    title: "Dark",
+    className: "dark",
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-moon-star"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path><path d="M19 3v4"></path><path d="M21 5h-4"></path></svg>`,
+  },
+  {
+    title: "System",
+    className: "system",
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-monitor-smartphone"><path d="M18 8V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h8"></path><path d="M10 19v-3.96 3.15"></path><path d="M7 19h5"></path><rect width="6" height="10" x="16" y="12" rx="2"></rect></svg>`,
+  },
+];
+
+const pulsarConfig = await useConfig()
+const darkMode = pulsarConfig.darkMode 
+const storageKey =  typeof darkMode === "string" ? darkMode : "pulsar-theme";
+
 ---
 
 <BaseLayout pageTitle={pageTitle}>
@@ -39,6 +68,13 @@ const content = await Astro.glob<MarkdownInstance<Page>>(
       <DocsLayout pages={content}>
         <Content />
         <slot />
+        {
+          darkMode && (
+            <div class="sidebar-switcher" slot="sidebar-bottom">
+              <ThemeSwitcher themes={themes} storageKey={storageKey} />
+            </div>
+          )
+        }
       </DocsLayout>
     ) : (
       <PageLayout>
@@ -56,3 +92,17 @@ const content = await Astro.glob<MarkdownInstance<Page>>(
     )
   }
 </BaseLayout>
+
+<style>
+  html.dark {
+    background-color: black;
+    color: white;
+  }
+
+  .sidebar-switcher {
+    display: flex;
+    justify-content: center;
+    padding: 1rem;
+    width: 100%;
+  }
+</style>

@@ -92,6 +92,11 @@ export const DocsConfigSchema = z.object({
   footer: Footer.optional().default({}),
 
   /**
+   * Whether to show the dark mode toggle in the sidebar.
+   */
+  darkMode: z.boolean().or(z.string()).optional().default(true),
+
+  /**
    * Customise the navigation buttons that appear at the bottom of each
    * documentation page.
    *
