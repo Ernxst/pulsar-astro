@@ -1,10 +1,15 @@
 ---
 import LeftSidebar from "../components/LeftSidebar/LeftSidebar.astro";
+import type { Props as LeftSidebarProps } from "../components/LeftSidebar/LeftSidebar.astro";
+
+export interface Props extends LeftSidebarProps {}
+
+const { pages } = Astro.props;
 ---
 
 <div class="docs-page">
   <aside>
-    <LeftSidebar />
+    <LeftSidebar pages={pages} />
   </aside>
   <main>
     <slot />

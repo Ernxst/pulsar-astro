@@ -1,0 +1,79 @@
+---
+export interface Props {
+  title: string;
+  url?: string;
+  depth: number;
+  active: boolean;
+}
+
+const { title, url, depth, active } = Astro.props;
+
+const isLink = Boolean(url);
+const isRootLevel = depth === 0;
+const isFirstLevel = depth === 1;
+
+const Heading = `h${depth + 2}`;
+const El = isLink ? "a" : "span";
+const props = isLink
+  ? { href: url, "aria-current": active, rel: "prefetch" }
+  : {};
+---
+
+<Heading>
+  <El
+    {...props}
+    class:list={[
+      {
+        "sidebar-section-title": true,
+        "sidebar-link": isLink,
+        "sidebar-readonly": !isLink,
+        "active-section": active,
+        "root-section": isRootLevel,
+        "first-level-section": isFirstLevel,
+      },
+    ]}
+  >
+    {title}
+  </El>
+</Heading>
+
+<style>
+  .sidebar-section-title {
+    font-size: 14px;
+    display: flex;
+  }
+
+  a {
+    padding: 6px 8px;
+    border-radius: 0.33rem;
+    width: 100%;
+  }
+
+  a:hover {
+    background: blue;
+  }
+
+  a.active-section {
+    background: red;
+    pointer-events: none;
+    font-weight: 600;
+  }
+
+  .sidebar-readonly {
+    margin-top: 1.25rem;
+    margin-bottom: 0.5rem;
+    cursor: default;
+  }
+
+  .sidebar-section-title:first-child {
+    margin-top: 0;
+  }
+
+  .sidebar-readonly.root-section {
+    font-weight: 600;
+  }
+
+  .sidebar-readonly.first-level-section {
+    margin-top: 0;
+  }
+</style>

@@ -1,25 +1,29 @@
 ---
-import type { CollectionEntry } from "astro:content";
-import type { Page } from "config";
+import type { MarkdownInstance } from "astro";
+import type { Page } from "../config";
 import BaseLayout from "./BaseLayout.astro";
 import DocsLayout from "./DocsLayout.astro";
 import PageLayout from "./PageLayout.astro";
+import type { PulsarCollectionEntry } from ".";
 
-// todo: the directory name we can infer
 export interface Props {
-  page: CollectionEntry<any>;
+  page: PulsarCollectionEntry<Page>;
 }
 
 const { page } = Astro.props;
 const { Content, headings } = await page.render();
-const config: Page = page.data;
 
+const config = page.data;
 const isDocs = config.type === "docs";
 const pageTitle = config.title ?? headings[0]?.text ?? "Untitled";
 
-// TODO: Get these from site config
+// TODO: Get these from page config
 const showNavbar = false;
 const showFooter = false;
+
+const content = await Astro.glob<MarkdownInstance<Page>>(
+  "../../../../**/src/content/**/*.{md,mdx}"
+);
 ---
 
 <BaseLayout pageTitle={pageTitle}>
@@ -31,15 +35,12 @@ const showFooter = false;
     )
   }
   {
-    isDocs && (
-      <DocsLayout>
+    isDocs ? (
+      <DocsLayout pages={content}>
         <Content />
         <slot />
       </DocsLayout>
-    )
-  }
-  {
-    !isDocs && (
+    ) : (
       <PageLayout>
         <Content />
         <slot />

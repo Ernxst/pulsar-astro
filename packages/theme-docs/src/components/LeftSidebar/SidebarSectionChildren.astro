@@ -1,0 +1,53 @@
+---
+import SidebarSection from "./SidebarSection.astro";
+import type { Props as SidebarSectionProps } from "./SidebarSection.astro";
+
+export interface Props {
+  children: Record<string, Omit<SidebarSectionProps, "depth">>;
+  isRoot: boolean;
+  depth: number;
+}
+
+const { children, depth, isRoot } = Astro.props;
+
+const childItems = Object.values(children);
+const hasChildren = childItems.length > 0;
+const hasLinks = childItems.some((child) => !!child.url);
+---
+
+<!-- TODO: Accordion to expand and collapse -->{
+  hasChildren && (
+    <ul
+      class:list={[
+        {
+          "sidebar-children": true,
+          indented: isRoot && hasLinks,
+          "has-links": hasLinks,
+        },
+      ]}
+    >
+      {childItems.map((child) => (
+        <li class="sidebar-child">
+          <SidebarSection {...child} depth={depth + 1} />
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+<style>
+  .sidebar-children {
+    display: grid;
+    grid-auto-flow: row;
+    gap: 0.5rem;
+  }
+
+  .sidebar-children.has-links {
+    margin-left: 5px;
+    border-left: 1px solid gray;
+  }
+
+  .sidebar-children.indented {
+    padding-left: 0.25rem;
+  }
+</style>

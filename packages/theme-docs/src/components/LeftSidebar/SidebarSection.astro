@@ -1,4 +1,7 @@
 ---
+import SidebarSectionChildren from "./SidebarSectionChildren.astro";
+import SidebarSectionHeading from "./SidebarSectionHeading.astro";
+
 export interface Props {
   title: string;
   url?: string;
@@ -8,105 +11,36 @@ export interface Props {
 
 const { title, url, children, depth } = Astro.props;
 
-const Heading = `h${depth + 2}`;
-const isCurrent = Astro.url.pathname === url;
-const isLink = !!url;
-const hasLinkChild = Object.values(children).some((child) => !!child.url);
+const active = Astro.url.pathname === url;
+const isRoot = depth === 0;
+const isIdented = depth > 1;
 ---
 
 <section
-  class="sidebar-section"
-  data-active={isCurrent}
-  data-depth={depth}
-  data-is-link={isLink}
-  data-has-link-child={hasLinkChild}
+  class:list={[
+    {
+      "sidebar-section": true,
+      indented: isIdented,
+    },
+  ]}
 >
-  {
-    url ? (
-      <Heading class="sidebar-section-title sidebar-link">
-        <a href={url} aria-current={isCurrent} rel="prefetch">
-          {title}
-        </a>
-      </Heading>
-    ) : (
-      <Heading class="sidebar-section-title no-link">{title}</Heading>
-    )
-  }
-
-  <!-- TODO: Accordion to expand and collapse -->
-  {
-    Object.values(children).length ? (
-      <ul class="sidebar-children">
-        {Object.values(children).map((child) => (
-          <li class="sidebar-child">
-            <Astro.self {...child} depth={depth + 1} />
-          </li>
-        ))}
-      </ul>
-    ) : (<></>)
-  }
+  <SidebarSectionHeading
+    title={title}
+    url={url}
+    depth={depth}
+    active={active}
+  />
+  <SidebarSectionChildren children={children} depth={depth} isRoot={isRoot} />
 </section>
 
 <style define:vars={{ depth }}>
   .sidebar-section {
-    margin-left: calc(0.25rem * var(--depth));
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
   }
 
-  .sidebar-section:not([data-is-link])[data-depth="1"] {
-    margin-left: 0;
-  }
-
-  .sidebar-section-title {
-    font-size: 14px;
-    display: flex;
-  }
-
-  [data-active] > .sidebar-section-title > a {
-    background: red;
-    pointer-events: none;
-    font-weight: 600;
-  }
-
-  .sidebar-link > a {
-    padding: 6px 8px;
-    border-radius: 0.33rem;
-    width: 100%;
-  }
-
-  .sidebar-link > a:hover {
-    background: blue;
-  }
-
-  .no-link {
-    margin-top: 1.25rem;
-    margin-bottom: 0.5rem;
-    cursor: default;
-  }
-
-  [data-depth="0"] > .no-link {
-    font-weight: 600;
-  }
-
-  [data-depth="1"] > .no-link {
-    margin-top: 0;
-  }
-
-  .sidebar-children {
-    display: grid;
-    grid-auto-flow: row;
-    gap: 0.5rem;
-  }
-
-  [data-depth="0"] > .sidebar-children {
-    margin-left: 0;
-    border-left: none;
-  }
-
-  [data-has-link-child] > .sidebar-children {
-    margin-left: 5px;
-    border-left: 1px solid gray;
+  .sidebar-section.indented {
+    margin-left: calc(0.25rem * var(--depth));
   }
 </style>
