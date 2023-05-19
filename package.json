@@ -14,7 +14,7 @@
     "--------------------------------------------------------------------------------": "",
     "lint": "eslint --cache \"./packages/*/src/**/*.{ts,js,astro}\"",
     "lint:fix": "eslint \"./packages/*/src/**/*.{ts,js,astro}\" --fix --cache",
-    "format": "prettier --write \"**/*.{ts,js,astro,json,md,yml,yaml}\" --plugin-search-dir=.",
+    "format": "prettier --write \"**/*.{html,css,ts,js,astro,json,md,yml,yaml}\" --plugin-search-dir=.",
     "---------------------------------------------------------------------------------": "",
     "test": "turbo run test",
     "aggregate": "node ./scripts/aggregate.mjs",
@@ -42,7 +42,7 @@
     "turbo": "1.9.6"
   },
   "nano-staged": {
-    "*.{ts,tsx,md,mdx,js,jsx,html,css,json}": [
+    "*.{html,css,ts,js,astro,json,md,yml,yaml}": [
       "prettier --write",
       "eslint --cache --fix"
     ]
