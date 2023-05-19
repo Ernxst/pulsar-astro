@@ -39,8 +39,8 @@ const sections = buildSections(pages);
     > .sidebar-section
     > .accordion-item
     > .toggle {
-    margin-top: 1.5rem;
-    margin-bottom: 0.7rem;
+    margin-top: 1.25rem;
+    margin-bottom: 0.66rem;
   }
 
   nav.sidebar
@@ -50,6 +50,17 @@ const sections = buildSections(pages);
     > .accordion-item
     > .toggle {
     margin-top: 0;
+  }
+
+  nav.sidebar 
+  > ul.sidebar-groups
+  > li
+  .sidebar-section.active-section
+  > .accordion-item
+  > .toggle {
+    background-color: red;
+    pointer-events: none;
+    font-weight: 600;
   }
 </style>
 
