@@ -1,0 +1,110 @@
+---
+export interface Props {
+  id: string;
+  interactive?: boolean;
+  collapsible?: boolean;
+  open?: boolean;
+}
+
+const {
+  id,
+  open = false,
+  interactive = false,
+  collapsible = true,
+} = Astro.props;
+const inputId = `${id}-input`;
+const controlsId = `${id}-controls`;
+---
+
+<div class="accordion-item">
+  <input type="checkbox" id={inputId} checked={open} />
+  <label
+    class:list={[
+      {
+        toggle: true,
+        interactive,
+        collapsible,
+      },
+    ]}
+    for={inputId}
+    id={id}
+    aria-controls={controlsId}
+    role="button"
+  >
+    <div class="label">
+      <slot name="header" />
+    </div>
+
+    <!-- TODO: Icon -->
+    {
+      collapsible && (
+        <label class="icon" for={inputId} aria-controls={controlsId} />
+      )
+    }
+  </label>
+
+  {
+    collapsible && (
+      <div class="content" role="region" id={controlsId} aria-labelledby={id}>
+        <slot name="content" />
+      </div>
+    )
+  }
+</div>
+
+<style>
+  .accordion-item {
+    position: relative;
+  }
+
+  .toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4px;
+    padding: 0.36rem 0.5rem;
+  }
+
+  .toggle.collapsible,
+  .toggle.interactive {
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .toggle.collapsible:hover,
+  .toggle.interactive:hover {
+    background: blue;
+  }
+
+  .toggle > .label {
+    flex: 1;
+  }
+
+  .toggle > .icon {
+    cursor: pointer;
+    width: 1.5rem;
+    height: 1.5rem;
+    padding: 0.125rem;
+    margin-left: auto;
+  }
+
+  .toggle > .icon:hover {
+    background: lightblue;
+  }
+
+  .content {
+    transition: 0.3s ease-in-out all;
+    max-height: 0;
+    overflow: hidden;
+  }
+
+  input {
+    position: absolute;
+    opacity: 0;
+    z-index: -1;
+  }
+
+  input:checked ~ .content {
+    max-height: 100vh;
+  }
+</style>
