@@ -10,7 +10,15 @@ export interface Props {
   depth: number;
 }
 
-const { title, url, children, depth } = Astro.props;
+const { title, url: href, children, depth } = Astro.props;
+
+let url = href;
+
+if ("index" in children) {
+  const page = children.index;
+  url = page.url;
+  delete children.index;
+}
 
 const active = Astro.url.pathname === url;
 const isRoot = depth === 0;
