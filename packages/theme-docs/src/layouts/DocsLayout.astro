@@ -28,54 +28,61 @@ const sections = buildSections(pages);
     </aside>
   </Show>
 
-  <main>
-    <div class="page-content">
+  <article class="wrapper">
+    <main class="page-content">
       <Show when={showBreadcrumbs}>
         <Breadcrumbs sidebar={sections} />
       </Show>
       <slot />
-    </div>
+    </main>
 
     <aside class="right-sidebar">
       <RightSidebar headings={headings} editUrl={editUrl} />
     </aside>
-  </main>
+  </article>
 </div>
 
 <style>
   .docs-page,
   .left-sidebar,
-  main,
+  .wrapper,
   .right-sidebar {
     display: flex;
   }
 
   .docs-page {
     height: 100%;
+    position: relative;
   }
 
   .left-sidebar {
+    position: sticky;
+    top: 4rem;
     flex-direction: column;
-    width: 300px;
-    min-width: 300px;
+    width: 16rem;
     border-right: 1px solid #eaeaea;
+    padding-top: 0.5rem;
   }
 
-  main {
+  .wrapper {
     flex: 1;
-    padding: 2rem;
+    padding-top: 1rem;
   }
 
   .page-content {
     flex: 1;
-    margin-top: 1rem;
+    padding-left: 3rem;
+    padding-right: 3rem;
+    max-width: 72rem;
+    min-width: 0;
+    padding-bottom: 2rem;
+    height: fit-content;
   }
 
   .right-sidebar {
-    width: 224px;
-    min-width: 224px;
-    margin-left: 32px;
-    overflow-x: hidden;
-    overflow-y: auto;
+    width: 250px;
+    min-width: 256px;
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
 </style>
