@@ -7,9 +7,11 @@ import ThemeSwitcher, {
 } from "../components/ui/ThemeSwitcher.astro";
 import type { Page } from "../config";
 import { useConfig } from "../config/app/lib";
+import Timestamp from "../components/ui/Timestamp.astro";
 import BaseLayout from "./BaseLayout.astro";
 import DocsLayout from "./DocsLayout.astro";
 import PageLayout from "./PageLayout.astro";
+import { formatUrl, getLastUpdatedDate } from "./lib";
 import type { PulsarCollectionEntry } from ".";
 
 export interface Props {
@@ -57,10 +59,6 @@ const darkMode = pulsarConfig.darkMode;
 // TODO: Should be based on site name
 const storageKey = typeof darkMode === "string" ? darkMode : "pulsar-theme";
 
-const githubLink = pulsarConfig.repositories.docs;
-const showLink = isDocs ? config.editInGitHub !== false : true;
-const editLink = showLink ? githubLink : undefined;
-
 const pagePagination = isDocs ? config.pagination : false;
 const sitePagination = pulsarConfig.pagination;
 const pageNext =
@@ -77,6 +75,20 @@ const pagination = {
   next: pageNext ?? Boolean(siteNext),
   prev: pagePrevious ?? Boolean(sitePrevious),
 };
+
+const { url: projectUrl } = pulsarConfig.repositories.project ?? {};
+const { token, url } = pulsarConfig.repositories.documentation ?? {};
+const docsUrl = url ?? projectUrl;
+
+const filepath = formatUrl(`/src/content/${page.collection}/${page.id}`);
+const showLink = isDocs ? config.editInGitHub !== false : true;
+const link = docsUrl ? formatUrl(`${docsUrl}/${filepath}`) : undefined;
+const editLink = showLink ? link : undefined;
+
+const shouldFetchLastUpdated = token && docsUrl;
+const lastUpdated = shouldFetchLastUpdated
+  ? await getLastUpdatedDate({ token, repoUrl: docsUrl, file: filepath })
+  : undefined;
 ---
 
 <BaseLayout pageTitle={pageTitle}>
@@ -99,6 +111,15 @@ const pagination = {
     >
       <Content />
       <slot />
+
+      <Show when={lastUpdated}>
+        <span class="timestamp">
+          <Timestamp
+            timestamp={lastUpdated!}
+            locale={pulsarConfig.site.defaultLocale}
+          />
+        </span>
+      </Show>
 
       <Show when={darkMode}>
         <div class="sidebar-switcher" slot="sidebar-bottom">
@@ -153,5 +174,14 @@ const pagination = {
     top: 0;
     width: 100%;
     z-index: 10;
+  }
+
+  .timestamp {
+    width: 100%;
+    text-align: right;
+    margin-top: 4rem;
+    margin-bottom: 2rem;
+    font-size: 0.75rem;
+    display: block;
   }
 </style>

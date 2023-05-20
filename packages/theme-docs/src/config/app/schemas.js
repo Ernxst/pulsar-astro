@@ -52,8 +52,8 @@ const Site = z.object({
    * on a per-page basis.
    */
   description: z.string().or(Fn),
-  defaultLocale: z.string().optional().default("en"),
-  dir: z.enum(["ltr", "rtl"]).optional().default("ltr"),
+  defaultLocale: z.string().default("en").optional(),
+  dir: z.enum(["ltr", "rtl"]).default("ltr").optional(),
 });
 
 const I18n = z.object({
@@ -103,16 +103,16 @@ const Navbar = z
 
 export const DocsConfigSchema = z.object({
   site: Site,
-  i18n: I18n.default({}),
+  i18n: I18n.default({}).optional(),
 
-  navbar: Navbar.optional().default({}),
+  navbar: Navbar.default({}).optional(),
 
-  footer: Footer.optional().default({}),
+  footer: Footer.default({}).optional(),
 
   /**
    * Whether to show the dark mode toggle in the sidebar.
    */
-  darkMode: z.boolean().or(z.string()).optional().default(true),
+  darkMode: z.boolean().or(z.string()).default(true).optional(),
 
   /**
    * Customise the navigation buttons that appear at the bottom of each
@@ -130,17 +130,50 @@ export const DocsConfigSchema = z.object({
 
   repositories: z
     .object({
+      project: z
+        .object({
+          /**
+           * @example "https://github.com/withastro/astro"
+           */
+          url: z.string(),
+        })
+        .optional(),
+
       /**
-       * The base URL for the repository where you documentation is hosted.
-       * This is used to show the "Edit this page" link.
+       * Separate configuration for the documentation repository in case it
+       * is different to the project repository.
        */
-      docs: z.string(),
-      /**
-       * The base URL for the repository where your project is hosted. Unlike,
-       * {@linkcode docs}, this is used to show a link to the project's
-       * repository in the navbar and footer.
-       */
-      project: z.string(),
+      documentation: z.object({
+        /**
+         * A GitHub personal access token. This is used to fetch the repository
+         * metadata from the GitHub API so that the 'Last updated' date can be
+         * shown.
+         *
+         * This is optional, but if you don't provide a token, the 'Last updated'
+         * date will not be shown.
+         *
+         * **This token should be kept secret - preferably as an environment variable
+         * - and NEVER committed to source control.**
+         *
+         * @see https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token
+         */
+        token: z.string().optional(),
+        /**
+         * Use this option if your documentation is in a different repository to
+         * the project itself referenced in {@link repo}.
+         *
+         * If you don't provide a value for this option, the value of {@link project["repo"]}
+         * will be used instead to determine the location of the documentation
+         * files.
+         *
+         * This is used to fetch the repository metadata from the GitHub API so
+         * that the 'Last updated' date can be shown as well as showing a link
+         * to edit the page on GitHub.
+         *
+         * @example "https://github.com/withastro/docs"
+         */
+        url: z.string().optional(),
+      }),
     })
     .partial()
     .optional()

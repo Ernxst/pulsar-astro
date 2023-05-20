@@ -11,8 +11,13 @@ export default defineConfig({
   pagination: true,
 
   repositories: {
-    project: "https://github.com",
-    docs: "https://github.com",
+    project: {
+      url: "https://github.com/Ernxst/pulsar",
+    },
+    documentation: {
+      url: "https://github.com/Ernxst/pulsar/tree/main/examples/cosmic-aperture",
+      token: "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",
+    },
   },
 
   seo: {

@@ -1,0 +1,21 @@
+---
+export interface Props {
+  timestamp: Date;
+  locale?: string;
+}
+
+const { timestamp, locale } = Astro.props;
+---
+
+<span>
+  Last updated on{" "}
+  <time datetime={timestamp.toISOString()}>
+    {
+      timestamp.toLocaleDateString(locale, {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      })
+    }
+  </time>
+</span>
