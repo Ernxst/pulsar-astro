@@ -17,36 +17,39 @@ const defaultIcon = themes.find((theme) => theme.default)?.icon;
 <!-- This is intentionally inlined to avoid FOUC -->
 <script is:inline define:vars={{ storageKey, themes }}>
   const root = document.documentElement;
-  const theme = localStorage.getItem(storageKey);
   const classNames = themes.map((theme) => theme.className);
 
-  if (theme === "system") {
-    const dark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    if (dark) root.classList.add("dark");
-    else root.classList.remove("dark");
-  } else {
-    root.classList.add(theme);
+  function setTheme(className) {
+    localStorage.setItem(storageKey, className);
+
+    root.classList.remove(...classNames);
+    if (className === "system") {
+      const dark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      if (dark) root.classList.add("dark");
+      else root.classList.remove("dark");
+    } else {
+      root.classList.add(className);
+    }
+
+    const selectedTheme = themes.find((t) => t.className === className);
+    const switcher = document.getElementById("theme-switcher");
+
+    if (switcher) {
+      const icon = switcher.querySelector("button > .icon");
+      icon.innerHTML = selectedTheme.icon;
+    }
   }
+
+  const theme = localStorage.getItem(storageKey);
+  setTheme(theme);
 
   document.addEventListener("DOMContentLoaded", () => {
     const switcher = document.getElementById("theme-switcher");
-    const icon = switcher.querySelector("button > .icon");
+    // Call it again to set the right icon
+    setTheme(theme);
 
     switcher.addEventListener("change", (event) => {
-      const theme = event.target.value;
-      localStorage.setItem(storageKey, theme);
-      root.classList.remove(...classNames);
-
-      if (theme === "system") {
-        const dark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-        if (dark) root.classList.add("dark");
-        else root.classList.remove("dark");
-      } else {
-        root.classList.add(theme);
-      }
-
-      const selectedTheme = themes.find((t) => t.className === theme);
-      icon.innerHTML = selectedTheme.icon;
+      setTheme(event.target.value);
     });
   });
 </script>
@@ -64,5 +67,6 @@ const defaultIcon = themes.find((theme) => theme.default)?.icon;
   .icon {
     width: 12px;
     height: 12px;
+    margin-right: 2px;
   }
 </style>
