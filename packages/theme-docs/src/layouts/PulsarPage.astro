@@ -49,10 +49,9 @@ const themes: Theme[] = [
   },
 ];
 
-const pulsarConfig = await useConfig()
-const darkMode = pulsarConfig.darkMode 
-const storageKey =  typeof darkMode === "string" ? darkMode : "pulsar-theme";
-
+const pulsarConfig = await useConfig();
+const darkMode = pulsarConfig.darkMode;
+const storageKey = typeof darkMode === "string" ? darkMode : "pulsar-theme";
 ---
 
 <BaseLayout pageTitle={pageTitle}>
@@ -68,13 +67,11 @@ const storageKey =  typeof darkMode === "string" ? darkMode : "pulsar-theme";
       <DocsLayout pages={content}>
         <Content />
         <slot />
-        {
-          darkMode && (
-            <div class="sidebar-switcher" slot="sidebar-bottom">
-              <ThemeSwitcher themes={themes} storageKey={storageKey} />
-            </div>
-          )
-        }
+        {darkMode && (
+          <div class="sidebar-switcher" slot="sidebar-bottom">
+            <ThemeSwitcher themes={themes} storageKey={storageKey} />
+          </div>
+        )}
       </DocsLayout>
     ) : (
       <PageLayout>

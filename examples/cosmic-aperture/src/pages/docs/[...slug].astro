@@ -1,6 +1,7 @@
 ---
 import PulsarPage from "@pulsar/docs/layouts/PulsarPage.astro";
-import { CollectionEntry, getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+import { getCollection } from "astro:content";
 
 export async function getStaticPaths() {
   const docs = await getCollection("docs");

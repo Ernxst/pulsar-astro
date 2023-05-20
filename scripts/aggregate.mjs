@@ -70,7 +70,6 @@ async function findCoverageReports(dir) {
 
   // Read the directory contents
   const contents = await fs.promises.readdir(dir, { withFileTypes: true });
-  console.log(contents)
 
   // Perform file system operations concurrently for maximum performance
   await Promise.all(
@@ -96,8 +95,6 @@ async function findCoverageReports(dir) {
 
 const label = "Aggregated all coverage reports in";
 console.time(label);
-copyCoverageReports(process.cwd(), ".nyc_output", "packages").then(
-  () => {
-    console.timeEnd(label);
-  }
-);
+copyCoverageReports(process.cwd(), ".nyc_output", "packages").then(() => {
+  console.timeEnd(label);
+});

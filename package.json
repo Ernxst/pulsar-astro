@@ -12,9 +12,9 @@
     "-------------------------------------------------------------------------------": "",
     "typecheck": "turbo run typecheck",
     "--------------------------------------------------------------------------------": "",
-    "lint": "eslint --cache \"./packages/*/src/**/*.{ts,js,astro}\"",
-    "lint:fix": "eslint \"./packages/*/src/**/*.{ts,js,astro}\" --fix --cache",
-    "format": "prettier --write \"**/*.{html,css,ts,js,astro,json,md,yml,yaml}\" --plugin-search-dir=.",
+    "lint": "eslint --cache .",
+    "lint:fix": "eslint . --fix --cache",
+    "format": "prettier --write . --cache --plugin-search-dir=.",
     "---------------------------------------------------------------------------------": "",
     "test": "turbo run test",
     "aggregate": "node ./scripts/aggregate.mjs",
@@ -43,8 +43,8 @@
   },
   "nano-staged": {
     "*.{html,css,ts,js,astro,json,md,yml,yaml}": [
-      "prettier --write",
-      "eslint --cache --fix"
+      "pnpm run format",
+      "pnpm run lint:fix"
     ]
   }
 }

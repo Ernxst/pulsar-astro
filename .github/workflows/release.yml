@@ -3,35 +3,35 @@ name: 📤 Release
 on:
   push:
     paths-ignore:
-      - ".vscode/**"
-      - ".husky/**"
-      - ".prettierignore"
-      - "LICENSE"
-      - "**/README.md"
-      - ".github/ISSUE_TEMPLATE/**"
-      - ".github/*.md"
-      - ".github/CODEOWNERS"
-      - ".github/FUNDING.yml"
-      - ".github/settings.yml"
-      - ".editorconfig"
-      - ".commitlintrc.json"
-      - ".prettierrc.json"
+      - '.vscode/**'
+      - '.husky/**'
+      - .prettierignore
+      - LICENSE
+      - '**/README.md'
+      - '.github/ISSUE_TEMPLATE/**'
+      - '.github/*.md'
+      - .github/CODEOWNERS
+      - .github/FUNDING.yml
+      - .github/settings.yml
+      - .editorconfig
+      - .commitlintrc.json
+      - .prettierrc.json
   pull_request:
     types: [opened, synchronize]
     paths-ignore:
-      - ".vscode/**"
-      - ".husky/**"
-      - ".prettierignore"
-      - "LICENSE"
-      - "**/README.md"
-      - ".github/ISSUE_TEMPLATE/**"
-      - ".github/*.md"
-      - ".github/CODEOWNERS"
-      - ".github/FUNDING.yml"
-      - ".github/settings.yml"
-      - ".editorconfig"
-      - ".commitlintrc.json"
-      - ".prettierrc.json"
+      - '.vscode/**'
+      - '.husky/**'
+      - .prettierignore
+      - LICENSE
+      - '**/README.md'
+      - '.github/ISSUE_TEMPLATE/**'
+      - '.github/*.md'
+      - .github/CODEOWNERS
+      - .github/FUNDING.yml
+      - .github/settings.yml
+      - .editorconfig
+      - .commitlintrc.json
+      - .prettierrc.json
 
 # Automatically cancel in-progress actions on the same branch
 concurrency:
@@ -108,11 +108,11 @@ jobs:
           bash <(curl -s https://codecov.io/bash)
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-          
+
   release:
     name: 🌍 Release
     needs: [test]
-        # only deploy main branch on pushes
+    # only deploy main branch on pushes
     if: ${{ github.repository_owner == 'Ernxst' && github.ref == 'refs/heads/main' && github.event_name == 'push' }}
     runs-on: ubuntu-latest
     steps:
