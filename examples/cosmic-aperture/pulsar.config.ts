@@ -8,7 +8,7 @@ export default defineConfig({
     defaultLocale: "en",
   },
 
-  navigate: true,
+  pagination: true,
 
   repositories: {
     project: "https://github.com",

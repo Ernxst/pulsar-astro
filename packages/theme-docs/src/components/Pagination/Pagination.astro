@@ -1,0 +1,151 @@
+---
+import type { Section, Sidebar } from "../LeftSidebar/sidebar";
+import Show from "../ui/Show.astro";
+
+export interface Props {
+  next: boolean;
+  prev: boolean;
+  sidebar: Sidebar;
+}
+
+function usePagination(sidebarData: Sidebar) {
+  const flatSidebar: Section[] = [];
+
+  function traverseDirectory(item: Section) {
+    flatSidebar.push(item);
+
+    if (item.children) {
+      for (const key in item.children) {
+        traverseDirectory(item.children[key]);
+      }
+    }
+  }
+
+  for (const key in sidebarData) {
+    traverseDirectory(sidebarData[key]);
+  }
+
+  const sidebar = flatSidebar.filter((item) => Boolean(item.url));
+
+  for (let i = 0; i < sidebar.length; i++) {
+    const item = sidebar[i];
+    if (item.url === Astro.url.pathname) {
+      return { next: sidebar[i + 1], prev: sidebar[i - 1] };
+    }
+  }
+
+  return null;
+}
+
+const { next, prev, sidebar } = Astro.props;
+
+const pagination = usePagination(sidebar);
+const showPrev = prev && pagination && pagination.prev;
+const showNext = next && pagination && pagination.next;
+---
+
+<nav class="container">
+  <ul class="navigation">
+    <Show when={showPrev}>
+      <li>
+        <a
+          class="link prev"
+          title="Go to the previous page"
+          href={pagination?.prev?.url}
+        >
+          <span class="subtitle">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="12"
+              height="12"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-arrow-left"
+              ><line x1="19" x2="5" y1="12" y2="12"></line><polyline
+                points="12 19 5 12 12 5"></polyline></svg
+            >
+            Previous page</span
+          >
+          <span class="title">{pagination?.prev?.title}</span>
+        </a>
+      </li>
+    </Show>
+
+    <Show when={showNext}>
+      <li class="next">
+        <a
+          class="link next"
+          title="Go to the next page"
+          href={pagination?.next?.url}
+        >
+          <span class="subtitle"
+            >Next page
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="12"
+              height="12"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-arrow-right"
+              ><line x1="5" x2="19" y1="12" y2="12"></line><polyline
+                points="12 5 19 12 12 19"></polyline></svg
+            >
+          </span>
+          <span class="title">{pagination?.next?.title}</span>
+        </a>
+      </li>
+    </Show>
+  </ul>
+</nav>
+
+<style>
+  .container {
+    margin-top: 4rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #eaeaea;
+  }
+
+  .navigation {
+    display: flex;
+    gap: 1rem;
+  }
+
+  li.next {
+    margin-left: auto;
+  }
+
+  .link {
+    display: flex;
+    flex-direction: column;
+    padding: 0.75rem;
+  }
+
+  .link.next {
+    align-items: flex-end;
+    text-align: right;
+  }
+
+  .subtitle {
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.25rem;
+    display: flex;
+    gap: 0.25rem;
+    align-items: center;
+  }
+
+  .title {
+    font-size: 14px;
+    line-height: 1.25rem;
+    font-weight: 600;
+    color: red;
+  }
+</style>

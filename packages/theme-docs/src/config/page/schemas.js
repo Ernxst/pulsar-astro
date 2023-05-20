@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { Pagination } from "../app/schemas";
 
 const PageBase = z.object({
   title: z.string().optional(),
@@ -35,6 +36,19 @@ export const DocsPageSchema = PageBase.merge(
      * @default true
      */
     sidebar: z.boolean().optional().default(true),
+    /**
+     * Customise the navigation buttons that appear at the bottom of the
+     * page.
+     *
+     * You can set this to `false` to disable the navigation buttons entirely or
+     * configure the navigation buttons individually.
+     *
+     * Note that you can also customise the navigation buttons at the site level
+     * in your `pulsar.config.js` file.
+     *
+     * @default true
+     */
+    pagination: Pagination,
   })
 );
 

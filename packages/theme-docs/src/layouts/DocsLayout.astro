@@ -7,16 +7,21 @@ import type { Props as RightSidebarProps } from "../components/RightSidebar/Righ
 import RightSidebar from "../components/RightSidebar/RightSidebar.astro";
 import Show from "../components/ui/Show.astro";
 import type { Page } from "../config";
+import Pagination from "../components/Pagination/Pagination.astro";
+import type { Props as PaginationProps } from "../components/Pagination/Pagination.astro";
 
 export interface Props extends RightSidebarProps {
   pages: MarkdownInstance<Page>[];
   showBreadcrumbs: boolean;
   showSidebar: boolean;
+  pagination: Omit<PaginationProps, "sidebar">;
 }
 
-const { pages, headings, editUrl, showBreadcrumbs, showSidebar } = Astro.props;
+const { pages, headings, editUrl, showBreadcrumbs, showSidebar, pagination } =
+  Astro.props;
 
 const sections = buildSections(pages);
+const paginate = pagination.next || pagination.prev;
 // TODO: Show last updated date
 ---
 
@@ -33,7 +38,16 @@ const sections = buildSections(pages);
       <Show when={showBreadcrumbs}>
         <Breadcrumbs sidebar={sections} />
       </Show>
+
       <slot />
+
+      <Show when={paginate}>
+        <Pagination
+          next={pagination.next}
+          prev={pagination.prev}
+          sidebar={sections}
+        />
+      </Show>
     </main>
 
     <aside class="right-sidebar">

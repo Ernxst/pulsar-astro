@@ -30,7 +30,7 @@ const controlsId = `${id}-controls`;
     ]}
     for={inputId}
     id={id}
-    aria-controls={controlsId}
+    aria-controls={collapsible ? controlsId : undefined}
     role="button"
   >
     <div class="label">

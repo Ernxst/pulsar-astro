@@ -75,6 +75,24 @@ const InternalLink = z.object({
   url: z.string(),
 });
 
+export const Pagination = z
+  .boolean()
+  .or(
+    z
+      .object({
+        /**
+         * Whether to show the "Next" button.
+         */
+        next: z.boolean().default(true),
+        /**
+         * Whether to show the "Previous" button.
+         */
+        prev: z.boolean().default(true),
+      })
+      .partial()
+  )
+  .optional();
+
 const Navbar = z
   .object({
     logo: z.string().optional(),
@@ -103,26 +121,12 @@ export const DocsConfigSchema = z.object({
    * You can set this to `false` to disable the navigation buttons entirely or
    * configure the navigation buttons individually.
    *
+   * Note that you can also customise the navigation buttons on a per-page basis
+   * in the frontmatter of each page.
+   *
    * @default true
    */
-  navigate: z
-    .boolean()
-    .or(
-      z
-        .object({
-          /**
-           * Whether to show the "Next" button.
-           */
-          next: z.boolean().default(true),
-          /**
-           * Whether to show the "Previous" button.
-           */
-          prev: z.boolean().default(true),
-        })
-        .partial()
-    )
-    .optional()
-    .default(true),
+  pagination: Pagination.default(true),
 
   repositories: z
     .object({
