@@ -11,8 +11,8 @@ export default defineConfig({
   navigate: true,
 
   repositories: {
-    project: "github.com",
-    docs: "github.com",
+    project: "https://github.com",
+    docs: "https://github.com",
   },
 
   seo: {

@@ -1,0 +1,107 @@
+---
+import type { MarkdownHeading } from "astro";
+
+export interface Props {
+  headings: MarkdownHeading[];
+}
+
+const { headings } = Astro.props;
+---
+
+<nav class="right-sidebar-nav">
+  <ul class="sidebar-links">
+    <!-- TODO: Handle different depths -->
+    {
+      headings.map(({ slug, text }) => (
+        <li>
+          <a class="sidebar-link" href={`#${slug}`}>
+            {text.trim()}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</nav>
+<script>
+  // TODO: Need to set the nearest link to active when scrolling
+  const nav = document.querySelector(".right-sidebar-nav");
+  const sidebarLinks = nav.querySelectorAll("a");
+
+  // Create a new Intersection Observer instance
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const headerId = entry.target.getAttribute("id");
+          const href = `#${headerId}`;
+
+          sidebarLinks.forEach((link) => {
+            const url = new URL(link.href);
+            if (url.hash === href) link.classList.add("active");
+            else link.classList.remove("active");
+          });
+        }
+      });
+    },
+    { threshold: 0.8 }
+  );
+
+  // Ignore the title heading
+  const pageHeaders = document.querySelectorAll(
+    ".page-content h2, .page-content h3, .page-content h4, .page-content h5, .page-content h6"
+  );
+
+  pageHeaders.forEach((header) => {
+    observer.observe(header);
+  });
+</script>
+
+<style>
+  .sidebar-links {
+    position: relative;
+  }
+
+  .sidebar-links::before {
+    content: "";
+    position: absolute;
+    left: 0px;
+    width: 1px;
+    height: 100%;
+    background: #e2e8f0;
+  }
+
+  .sidebar-links li {
+    display: flex;
+    align-items: center;
+    line-height: 24px;
+  }
+
+  .sidebar-link {
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 14px;
+    padding: 0.3rem 0.2rem;
+    padding-left: 1rem;
+    position: relative;
+  }
+
+  .sidebar-link.active {
+    font-weight: 500;
+    pointer-events: none;
+  }
+
+  .sidebar-link.active::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    margin-top: auto;
+    margin-bottom: auto;
+    width: 1.5px;
+    height: 20px;
+    background: blue;
+  }
+</style>
