@@ -22,9 +22,8 @@ const isDocs = config.type === "docs";
 // TODO: This could also come from _meta.json
 const pageTitle = config.title ?? headings[0]?.text ?? "Untitled";
 
-// TODO: Get these from page config
-const showNavbar = true;
-const showFooter = true;
+const showNavbar = config.navbar;
+const showFooter = config.footer;
 const showBreadcrumbs = config.breadcrumbs;
 
 const content = await Astro.glob<MarkdownInstance<Page>>(

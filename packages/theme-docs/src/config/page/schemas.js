@@ -28,6 +28,13 @@ const PageBase = z.object({
   navbar: z.boolean().optional().default(true),
 
   /**
+   * Whether to show the footer on this page.
+   *
+   * @default true
+   */
+  footer: z.boolean().optional().default(true),
+
+  /**
    * Whether to show the breadcrumbs on this page.
    *
    * @default true
