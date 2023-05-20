@@ -24,12 +24,13 @@ const { headings } = Astro.props;
 </nav>
 <script>
   // TODO: Need to set the nearest link to active when scrolling
-  const nav = document.querySelector(".right-sidebar-nav");
-  const sidebarLinks = nav.querySelectorAll("a");
 
   // Create a new Intersection Observer instance
   const observer = new IntersectionObserver(
     (entries) => {
+      const nav = document.querySelector(".right-sidebar-nav");
+      const sidebarLinks = nav.querySelectorAll("a");
+
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           const headerId = entry.target.getAttribute("id");
