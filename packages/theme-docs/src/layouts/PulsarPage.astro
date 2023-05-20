@@ -1,9 +1,10 @@
 ---
 import type { MarkdownInstance } from "astro";
-import type { Page } from "../config";
+import Show from "../components/ui/Show.astro";
 import ThemeSwitcher, {
   type Theme,
 } from "../components/ui/ThemeSwitcher.astro";
+import type { Page } from "../config";
 import { useConfig } from "../config/app/lib";
 import BaseLayout from "./BaseLayout.astro";
 import DocsLayout from "./DocsLayout.astro";
@@ -61,45 +62,43 @@ const editLink = showLink ? githubLink : undefined;
 ---
 
 <BaseLayout pageTitle={pageTitle}>
-  {
-    showNavbar && (
-      <nav>
-        <slot name="navbar" />
-      </nav>
-    )
-  }
-  {
-    isDocs ? (
-      <DocsLayout
-        pages={content}
-        headings={headings}
-        editUrl={editLink}
-        showBreadcrumbs={showBreadcrumbs}
-        showSidebar={showSidebar}
-      >
-        <Content />
-        <slot />
-        {darkMode && (
-          <div class="sidebar-switcher" slot="sidebar-bottom">
-            <ThemeSwitcher themes={themes} storageKey={storageKey} />
-          </div>
-        )}
-      </DocsLayout>
-    ) : (
-      <PageLayout>
-        <Content />
-        <slot />
-      </PageLayout>
-    )
-  }
+  <Show when={showNavbar}>
+    <nav>
+      <slot name="navbar" />
+    </nav>
+  </Show>
 
-  {
-    showFooter && (
-      <footer>
-        <slot name="footer" />
-      </footer>
-    )
-  }
+  <Show when={isDocs}>
+    <DocsLayout
+      pages={content}
+      headings={headings}
+      editUrl={editLink}
+      showBreadcrumbs={showBreadcrumbs}
+      showSidebar={showSidebar}
+    >
+      <Content />
+      <slot />
+
+      <Show when={darkMode}>
+        <div class="sidebar-switcher" slot="sidebar-bottom">
+          <ThemeSwitcher themes={themes} storageKey={storageKey} />
+        </div>
+      </Show>
+    </DocsLayout>
+  </Show>
+
+  <Show when={!isDocs}>
+    <PageLayout>
+      <Content />
+      <slot />
+    </PageLayout>
+  </Show>
+
+  <Show when={showFooter}>
+    <footer>
+      <slot name="footer" />
+    </footer>
+  </Show>
 </BaseLayout>
 
 <style>

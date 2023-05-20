@@ -1,4 +1,6 @@
 ---
+import Show from "../Show.astro";
+
 export interface Props {
   id: string;
   interactive?: boolean;
@@ -35,21 +37,17 @@ const controlsId = `${id}-controls`;
       <slot name="header" />
     </div>
 
-    <!-- TODO: Icon -->
-    {
-      collapsible && (
-        <label class="icon" for={inputId} aria-controls={controlsId} />
-      )
-    }
+    <Show when={collapsible}>
+      <!-- TODO: Icon -->
+      <label class="icon" for={inputId} aria-controls={controlsId}></label>
+    </Show>
   </label>
 
-  {
-    collapsible && (
-      <div class="content" role="region" id={controlsId} aria-labelledby={id}>
-        <slot name="content" />
-      </div>
-    )
-  }
+  <Show when={collapsible}>
+    <div class="content" role="region" id={controlsId} aria-labelledby={id}>
+      <slot name="content" />
+    </div>
+  </Show>
 </div>
 
 <style>

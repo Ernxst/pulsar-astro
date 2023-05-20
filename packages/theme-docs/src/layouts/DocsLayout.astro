@@ -1,11 +1,12 @@
 ---
 import type { MarkdownInstance } from "astro";
 import Breadcrumbs from "../components/Breadcrumbs/Breadcrumbs.astro";
-import RightSidebar from "../components/RightSidebar/RightSidebar.astro";
 import LeftSidebar from "../components/LeftSidebar/LeftSidebar.astro";
 import { buildSections } from "../components/LeftSidebar/sidebar";
-import type { Page } from "../config";
 import type { Props as RightSidebarProps } from "../components/RightSidebar/RightSidebar.astro";
+import RightSidebar from "../components/RightSidebar/RightSidebar.astro";
+import Show from "../components/ui/Show.astro";
+import type { Page } from "../config";
 
 export interface Props extends RightSidebarProps {
   pages: MarkdownInstance<Page>[];
@@ -20,19 +21,21 @@ const sections = buildSections(pages);
 ---
 
 <div class="docs-page">
-  {
-    showSidebar && (
-      <aside class="left-sidebar">
-        <LeftSidebar sections={sections} />
-        <slot name="sidebar-bottom" />
-      </aside>
-    )
-  }
+  <Show when={showSidebar}>
+    <aside class="left-sidebar">
+      <LeftSidebar sections={sections} />
+      <slot name="sidebar-bottom" />
+    </aside>
+  </Show>
+
   <main>
     <div class="page-content">
-      {showBreadcrumbs && <Breadcrumbs sidebar={sections} />}
+      <Show when={showBreadcrumbs}>
+        <Breadcrumbs sidebar={sections} />
+      </Show>
       <slot />
     </div>
+
     <aside class="right-sidebar">
       <RightSidebar headings={headings} editUrl={editUrl} />
     </aside>

@@ -1,4 +1,5 @@
 ---
+import Show from "../ui/Show.astro";
 import SidebarSection from "./SidebarSection.astro";
 import type { Props as SidebarSectionProps } from "./SidebarSection.astro";
 
@@ -13,27 +14,30 @@ const { children, depth, isRoot } = Astro.props;
 const childItems = Object.values(children);
 const hasChildren = childItems.length > 0;
 const hasLinks = childItems.some((child) => !!child.url);
+const isIndented = isRoot && hasLinks;
 ---
 
-<!-- TODO: Accordion to expand and collapse -->{
-  hasChildren && (
+<div>
+  <Show when={hasChildren}>
     <ul
       class:list={[
         {
           "sidebar-children": true,
-          indented: isRoot && hasLinks,
+          indented: isIndented,
           "has-links": hasLinks,
         },
       ]}
     >
-      {childItems.map((child) => (
-        <li class="sidebar-child">
-          <SidebarSection {...child} depth={depth + 1} />
-        </li>
-      ))}
+      {
+        childItems.map((child) => (
+          <li class="sidebar-child">
+            <SidebarSection {...child} depth={depth + 1} />
+          </li>
+        ))
+      }
     </ul>
-  )
-}
+  </Show>
+</div>
 
 <style>
   .sidebar-children {

@@ -2,6 +2,7 @@
 /* eslint-disable-next-line import/no-named-default */
 import { default as inflection } from "inflection";
 import { type Section, type Sidebar, getValue } from "../LeftSidebar/sidebar";
+import Show from "../ui/Show.astro";
 
 export interface Props {
   sidebar: Sidebar;
@@ -66,11 +67,10 @@ const segments = buildSegments(Astro.url.pathname);
 
 <nav aria-label="Breadcrumb">
   <ol class="crumbs">
-    <!-- TODO: Url isn't correct -->
     {
       segments.map(({ url, title }, idx) => (
         <li>
-          {idx > 0 && (
+          <Show when={idx > 0}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="12"
@@ -85,8 +85,9 @@ const segments = buildSegments(Astro.url.pathname);
             >
               <polyline points="9 18 15 12 9 6" />
             </svg>
-          )}
-          {url && (
+          </Show>
+
+          <Show when={url}>
             <a
               class="breadcrumb"
               href={url}
@@ -94,8 +95,11 @@ const segments = buildSegments(Astro.url.pathname);
             >
               {title}
             </a>
-          )}
-          {!url && <span class="breadcrumb">{title}</span>}
+          </Show>
+
+          <Show when={!url}>
+            <span class="breadcrumb">{title}</span>
+          </Show>
         </li>
       ))
     }
