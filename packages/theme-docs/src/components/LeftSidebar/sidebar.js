@@ -36,6 +36,7 @@ export function buildSections(mdFiles) {
     const [first, ...segments] = slug
       .split("/")
       .filter(Boolean)
+      // TODO: Too many assumptions
       .filter((s) => s !== "docs" && s !== "en");
 
     let dotPath = first;

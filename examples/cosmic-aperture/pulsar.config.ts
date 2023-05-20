@@ -2,9 +2,10 @@ import { defineConfig } from "@pulsar/docs";
 
 export default defineConfig({
   site: {
-    siteTitle: "shadcn Svelte",
-    titleTemplate: ({ title }) => `${title} - shadcn Svelte`,
-    description: "A Svelte port of shadcn/ui component library",
+    siteTitle: "Pulsar",
+    titleTemplate: ({ title }) => `${title} - Pulsar`,
+    description:
+      "An out of this world, batteries-included SSG and SSR-ready documentation builder framework for Astro.",
     defaultLocale: "en",
   },
 
@@ -23,7 +24,7 @@ export default defineConfig({
   seo: {
     twitter: {
       cardType: "summary_large_image",
-      site: "https://svelte.shadcn.dev",
+      site: "https://pulsarjs.dev",
     },
   },
 });

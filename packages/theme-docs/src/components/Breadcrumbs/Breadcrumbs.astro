@@ -25,6 +25,7 @@ function buildSegments(url: string): Segment[] {
   if (!langName) segments.unshift(lang);
 
   let dotPath = "";
+  // TODO: Fix too many assumptions
   const result: Segment[] = [{ title: "Documentation", url: `/${docs}` }];
 
   function addBreadcrumbSection(path: string) {

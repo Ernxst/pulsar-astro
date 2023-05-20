@@ -152,8 +152,8 @@ export const DocsConfigSchema = z.object({
          * This is optional, but if you don't provide a token, the 'Last updated'
          * date will not be shown.
          *
-         * **This token should be kept secret - preferably as an environment variable
-         * - and NEVER committed to source control.**
+         * **This token should be kept secret - preferably as an environment variable -
+         *  and NEVER committed to source control.**
          *
          * @see https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token
          */
