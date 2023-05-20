@@ -1,16 +1,13 @@
 ---
-import type { MarkdownInstance } from "astro";
-import type { Page } from "../../config/page";
-import { buildSections } from "./sidebar.js";
+import { type Sidebar } from "./sidebar.js";
 import SidebarSection from "./SidebarSection.astro";
 
 export interface Props {
-  pages: MarkdownInstance<Page>[];
+  sections: Sidebar;
 }
 
 // TODO: Support _meta.json files - match filename to keys in json file
-const { pages } = Astro.props;
-const sections = buildSections(pages);
+const { sections } = Astro.props;
 ---
 
 <nav class="sidebar" aria-labelledby="grid-left">

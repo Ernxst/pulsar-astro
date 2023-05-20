@@ -13,12 +13,6 @@ const SidebarSection = z.object({
    * @default true
    */
   sidebar: z.boolean().default(true),
-  /**
-   * Whether to show the navbar on this page.
-   *
-   * @default true
-   */
-  navbar: z.boolean().default(true),
 });
 
 const _Sidebar = z.array(SidebarSection).default([]);
@@ -26,6 +20,19 @@ const _Sidebar = z.array(SidebarSection).default([]);
 const PageBase = z.object({
   title: z.string().optional(),
   description: z.string().optional(),
+  /**
+   * Whether to show the navbar on this page.
+   *
+   * @default true
+   */
+  navbar: z.boolean().optional().default(true),
+
+  /**
+   * Whether to show the breadcrumbs on this page.
+   *
+   * @default true
+   */
+  breadcrumbs: z.boolean().optional().default(true),
 });
 
 export const DocsPageSchema = PageBase.merge(

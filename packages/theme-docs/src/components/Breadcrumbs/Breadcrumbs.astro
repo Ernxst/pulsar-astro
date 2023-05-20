@@ -1,0 +1,131 @@
+---
+/* eslint-disable-next-line import/no-named-default */
+import { default as inflection } from "inflection";
+import { type Section, type Sidebar, getValue } from "../LeftSidebar/sidebar";
+
+export interface Props {
+  sidebar: Sidebar;
+}
+
+interface Segment {
+  title: string;
+  url?: string;
+}
+
+const { sidebar } = Astro.props;
+
+function buildSegments(url: string): Segment[] {
+  // TODO: This assumes the first segment is the docs path - may not be safe
+  const [docs, lang, ...segments] = url.split("/").filter(Boolean);
+  const languageNames = new Intl.DisplayNames([lang], { type: "language" });
+
+  // If the second segment is not a language code, add it back to the segments
+  const langName = languageNames.of(lang);
+  if (!langName) segments.unshift(lang);
+
+  let dotPath = "";
+  const result: Segment[] = [{ title: "Documentation", url: `/${docs}` }];
+
+  function addBreadcrumbSection(path: string) {
+    const section = getValue(path, sidebar) as Section | undefined;
+
+    if (section) {
+      dotPath = path;
+      const { children, title, url } = section;
+      const href = url ?? children.index?.url ?? undefined;
+      result.push({ title, url: href });
+      return true;
+    }
+
+    return false;
+  }
+
+  for (let i = 0; i < segments.length; i++) {
+    const segment = segments[i];
+
+    // Check if the segment is a top-level section and add it to the breadcrumb
+    const topLevelPath = dotPath ? `${dotPath}.${segment}` : segment;
+    if (addBreadcrumbSection(topLevelPath)) continue;
+
+    // Check if the segment is a nested section and add it to the breadcrumb
+    const nestedPath = dotPath ? `${dotPath}.children.${segment}` : segment;
+    if (addBreadcrumbSection(nestedPath)) continue;
+
+    // I can't see how this would ever be reached, but just in case
+    const title = inflection.titleize(segment.replace("-", "_"));
+    const url = `/${segments.slice(0, i + 1).join("/")}`;
+
+    result.push({ title, url });
+  }
+
+  return result;
+}
+
+const segments = buildSegments(Astro.url.pathname);
+---
+
+<nav aria-label="Breadcrumb">
+  <ol class="crumbs">
+    <!-- TODO: Url isn't correct -->
+    {
+      segments.map(({ url, title }, idx) => (
+        <li>
+          {idx > 0 && (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="12"
+              height="12"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-chevron-right"
+            >
+              <polyline points="9 18 15 12 9 6" />
+            </svg>
+          )}
+          {url && (
+            <a
+              class="breadcrumb"
+              href={url}
+              aria-current={idx === segments.length - 1 ? "page" : undefined}
+            >
+              {title}
+            </a>
+          )}
+          {!url && <span class="breadcrumb">{title}</span>}
+        </li>
+      ))
+    }
+  </ol>
+</nav>
+
+<style>
+  .crumbs,
+  .crumbs li {
+    display: flex;
+    gap: 0.25rem;
+  }
+
+  .crumbs li {
+    align-items: center;
+  }
+
+  .breadcrumb {
+    font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .breadcrumb[aria-current="page"] {
+    font-weight: 600;
+    pointer-events: none;
+  }
+
+  span.breadcrumb {
+    cursor: default;
+  }
+</style>

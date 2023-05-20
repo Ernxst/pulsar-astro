@@ -1,21 +1,31 @@
 ---
+import type { MarkdownInstance } from "astro";
+import Breadcrumbs from "../components/Breadcrumbs/Breadcrumbs.astro";
 import RightSidebar from "../components/RightSidebar/RightSidebar.astro";
 import LeftSidebar from "../components/LeftSidebar/LeftSidebar.astro";
-import type { Props as LeftSidebarProps } from "../components/LeftSidebar/LeftSidebar.astro";
+import { buildSections } from "../components/LeftSidebar/sidebar";
+import type { Page } from "../config";
 import type { Props as RightSidebarProps } from "../components/RightSidebar/RightSidebar.astro";
 
-export interface Props extends LeftSidebarProps, RightSidebarProps {}
+export interface Props extends RightSidebarProps {
+  pages: MarkdownInstance<Page>[];
+  showBreadcrumbs: boolean;
+}
 
-const { pages, headings, editUrl } = Astro.props;
+const { pages, headings, editUrl, showBreadcrumbs } = Astro.props;
+
+const sections = buildSections(pages);
+// TODO: Show last updated date
 ---
 
 <div class="docs-page">
   <aside class="left-sidebar">
-    <LeftSidebar pages={pages} />
+    <LeftSidebar sections={sections} />
     <slot name="sidebar-bottom" />
   </aside>
   <main>
     <div class="page-content">
+      {showBreadcrumbs && <Breadcrumbs sidebar={sections} />}
       <slot />
     </div>
     <aside class="right-sidebar">
@@ -50,6 +60,7 @@ const { pages, headings, editUrl } = Astro.props;
 
   .page-content {
     flex: 1;
+    margin-top: 1rem;
   }
 
   .right-sidebar {

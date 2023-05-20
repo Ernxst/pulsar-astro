@@ -90,7 +90,7 @@ export function buildSections(mdFiles) {
  * @param {object} object
  * @returns
  */
-function getValue(dotPath, object) {
+export function getValue(dotPath, object) {
   return dotPath.split(".").reduce((o, i) => o[i], object);
 }
 

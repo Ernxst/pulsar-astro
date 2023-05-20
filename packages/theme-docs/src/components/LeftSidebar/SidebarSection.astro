@@ -10,8 +10,8 @@ export interface Props {
   depth: number;
 }
 
-const { title, url: href, children, depth } = Astro.props;
-
+const { title, url: href, children: childs, depth } = Astro.props;
+const children = { ...childs };
 let url = href;
 
 if ("index" in children) {

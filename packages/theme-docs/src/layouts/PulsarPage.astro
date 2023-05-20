@@ -25,6 +25,7 @@ const pageTitle = config.title ?? headings[0]?.text ?? "Untitled";
 // TODO: Get these from page config
 const showNavbar = true;
 const showFooter = true;
+const showBreadcrumbs = config.breadcrumbs;
 
 const content = await Astro.glob<MarkdownInstance<Page>>(
   "../../../../**/src/content/**/*.{md,mdx}"
@@ -69,7 +70,12 @@ const editLink = showLink ? githubLink : undefined;
   }
   {
     isDocs ? (
-      <DocsLayout pages={content} headings={headings} editUrl={editLink}>
+      <DocsLayout
+        pages={content}
+        headings={headings}
+        editUrl={editLink}
+        showBreadcrumbs={showBreadcrumbs}
+      >
         <Content />
         <slot />
         {darkMode && (
