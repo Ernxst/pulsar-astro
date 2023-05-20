@@ -1,0 +1,30 @@
+---
+export interface Props {}
+
+// TODO: Links, logo, etc.
+---
+
+<nav class="navbar">
+  <slot />
+</nav>
+
+<style>
+  .navbar {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    justify-content: flex-end;
+    height: 4rem;
+    border-bottom-color: rgb(229, 231, 235);
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    background: white;
+    box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px,
+      rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.02) 0px 2px 4px 0px,
+      rgba(0, 0, 0, 0.06) 0px 1px 0px 0px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+</style>

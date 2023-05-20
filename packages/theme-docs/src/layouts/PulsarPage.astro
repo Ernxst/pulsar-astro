@@ -1,5 +1,6 @@
 ---
 import type { MarkdownInstance } from "astro";
+import Navbar from "../components/Navbar/Navbar.astro";
 import Show from "../components/ui/Show.astro";
 import ThemeSwitcher, {
   type Theme,
@@ -63,9 +64,11 @@ const editLink = showLink ? githubLink : undefined;
 
 <BaseLayout pageTitle={pageTitle}>
   <Show when={showNavbar}>
-    <nav>
-      <slot name="navbar" />
-    </nav>
+    <div class="navbar-container">
+      <Navbar>
+        <slot name="navbar" />
+      </Navbar>
+    </div>
   </Show>
 
   <Show when={isDocs}>
@@ -121,5 +124,16 @@ const editLink = showLink ? githubLink : undefined;
 
   :global([data-js="false"] .sidebar-switcher) {
     display: none;
+  }
+
+  body {
+    height: auto;
+  }
+
+  .navbar-container {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    z-index: 10;
   }
 </style>
