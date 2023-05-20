@@ -10,19 +10,24 @@ import type { Props as RightSidebarProps } from "../components/RightSidebar/Righ
 export interface Props extends RightSidebarProps {
   pages: MarkdownInstance<Page>[];
   showBreadcrumbs: boolean;
+  showSidebar: boolean;
 }
 
-const { pages, headings, editUrl, showBreadcrumbs } = Astro.props;
+const { pages, headings, editUrl, showBreadcrumbs, showSidebar } = Astro.props;
 
 const sections = buildSections(pages);
 // TODO: Show last updated date
 ---
 
 <div class="docs-page">
-  <aside class="left-sidebar">
-    <LeftSidebar sections={sections} />
-    <slot name="sidebar-bottom" />
-  </aside>
+  {
+    showSidebar && (
+      <aside class="left-sidebar">
+        <LeftSidebar sections={sections} />
+        <slot name="sidebar-bottom" />
+      </aside>
+    )
+  }
   <main>
     <div class="page-content">
       {showBreadcrumbs && <Breadcrumbs sidebar={sections} />}

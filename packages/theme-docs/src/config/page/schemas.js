@@ -1,22 +1,5 @@
 import { z } from "zod";
 
-// TODO: This should go in the _meta.json config
-const SidebarSection = z.object({
-  /**
-   * The title of the section - this is what will be displayed in the sidebar
-   * and used as the title of the page.
-   */
-  title: z.string(),
-  /**
-   * Whether to show the sidebar on this page.
-   *
-   * @default true
-   */
-  sidebar: z.boolean().default(true),
-});
-
-const _Sidebar = z.array(SidebarSection).default([]);
-
 const PageBase = z.object({
   title: z.string().optional(),
   description: z.string().optional(),
@@ -46,6 +29,12 @@ export const DocsPageSchema = PageBase.merge(
   z.object({
     type: z.enum(["docs"]).optional().default("docs"),
     editInGitHub: z.boolean().optional().default(true),
+    /**
+     * Whether to show the sidebar on this page.
+     *
+     * @default true
+     */
+    sidebar: z.boolean().optional().default(true),
   })
 );
 

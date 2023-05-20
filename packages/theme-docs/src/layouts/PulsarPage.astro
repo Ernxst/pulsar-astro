@@ -22,6 +22,7 @@ const isDocs = config.type === "docs";
 // TODO: This could also come from _meta.json
 const pageTitle = config.title ?? headings[0]?.text ?? "Untitled";
 
+const showSidebar = isDocs ? config.sidebar : false;
 const showNavbar = config.navbar;
 const showFooter = config.footer;
 const showBreadcrumbs = config.breadcrumbs;
@@ -74,6 +75,7 @@ const editLink = showLink ? githubLink : undefined;
         headings={headings}
         editUrl={editLink}
         showBreadcrumbs={showBreadcrumbs}
+        showSidebar={showSidebar}
       >
         <Content />
         <slot />
