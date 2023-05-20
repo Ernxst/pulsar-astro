@@ -5,6 +5,8 @@ import type { Props as HeadSEOProps } from "../components/HeadSEO.astro";
 import HeadSEO from "../components/HeadSEO.astro";
 import { useConfig, useConfigHandler } from "../config/app/lib";
 
+import "../styles/global.css";
+
 export interface Props {
   pageTitle: string;
   lang?: string;
@@ -48,13 +50,7 @@ const headSeoProps: HeadSEOProps = {
     <HeadSEO {...headSeoProps} />
   </head>
 
-  <body>
+  <body data-js="false" onload="document.body.setAttribute('data-js', '')">
     <slot />
-    <style>
-      html,
-      body {
-        height: 100%;
-      }
-    </style>
   </body>
 </html>
