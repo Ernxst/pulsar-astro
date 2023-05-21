@@ -11,7 +11,7 @@ function mockMarkdownFile(slug) {
   const baseName = path.basename(slug, path.extname(slug));
   return {
     slug,
-    headings: [titleize(baseName.replace("-", "_"))],
+    headings: [titleize(baseName.replaceAll("-", "_"))],
   };
 }
 

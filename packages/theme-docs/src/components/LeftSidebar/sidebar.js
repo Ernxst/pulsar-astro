@@ -61,18 +61,22 @@ export function useSidebar(mdFiles, pathname) {
 
     for (let i = 0; i < segments.length; i++) {
       const segment = segments[i];
+      const isLast = i === segments.length - 1;
       // Check if this is the last segment (on top of == index)
       // in case the consumer has a directory named "index"
-      if (segment === "index" && i === segments.length - 1) continue;
+      if (segment === "index" && isLast) continue;
 
       if (dotPath !== "") dotPath += ".children.";
       dotPath += segment;
 
       const nextSegment = segments[i + 1];
       const url = `${baseUrl}/${segments.slice(0, i + 1).join("/")}`;
+      const title = isLast
+        ? headings[0]
+        : inflection.titleize(segment.replaceAll("-", "_"));
 
       addSection(dotPath, segment, {
-        title: inflection.titleize(segment.replace("-", "_")),
+        title,
         url: nextSegment === "index" ? formatUrl(url) : undefined,
         children: {},
       });
