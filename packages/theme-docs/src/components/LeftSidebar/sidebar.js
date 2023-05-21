@@ -61,7 +61,9 @@ export function useSidebar(mdFiles, pathname) {
 
     for (let i = 0; i < segments.length; i++) {
       const segment = segments[i];
-      if (segment === "index") continue;
+      // Check if this is the last segment (on top of == index)
+      // in case the consumer has a directory named "index"
+      if (segment === "index" && i === segments.length - 1) continue;
 
       if (dotPath !== "") dotPath += ".children.";
       dotPath += segment;
@@ -70,7 +72,7 @@ export function useSidebar(mdFiles, pathname) {
       const url = `${baseUrl}/${segments.slice(0, i + 1).join("/")}`;
 
       addSection(dotPath, segment, {
-        title: inflection.titleize(segments[i].replace("-", "_")),
+        title: inflection.titleize(segment.replace("-", "_")),
         url: nextSegment === "index" ? formatUrl(url) : undefined,
         children: {},
       });
