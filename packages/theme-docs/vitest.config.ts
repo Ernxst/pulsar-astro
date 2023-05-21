@@ -14,7 +14,7 @@ export default defineConfig({
         "**/__test__/**",
         "**/*.astro",
         "src/**/index.js",
-        "src/config/app/schema.js",
+        "src/config/app/schemas.js",
         "src/config/page/schemas.js",
       ],
     },

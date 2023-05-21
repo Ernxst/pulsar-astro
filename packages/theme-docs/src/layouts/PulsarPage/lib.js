@@ -36,8 +36,8 @@ export async function collectionToMarkdownFiles(collection, getCollection) {
 
 /**
  * @typedef {object} PaginationOptions
- * @property {import("../../config").PulsarDocsConfig} siteConfig;
- * @property {Pick<import("../../config").DocsPage, "pagination">} pageConfig;
+ * @property {Partial<Pick<import("../../config").PulsarDocsConfig, "pagination">>} siteConfig;
+ * @property {Partial<Pick<import("../../config").DocsPage, "pagination">>} pageConfig;
  */
 
 /**
@@ -83,6 +83,7 @@ export function useEditUrl(options) {
   const { url: projectUrl } = siteConfig.repositories.project ?? {};
   const { url: documentationUrl } = siteConfig.repositories.documentation ?? {};
   const docsUrl = documentationUrl ?? projectUrl;
+  // TODO: Add `edit` into the URL after the owner/repo
 
   const filepath = formatUrl(`/src/content/${collection}/${filePath}`);
   return docsUrl ? formatUrl(`${docsUrl}/${filepath}`) : null;
