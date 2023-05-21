@@ -51,7 +51,7 @@ export function useSidebar(mdFiles, pathname) {
 
   for (const { headings, slug } of mdFiles) {
     const [lang, ...segments] = slug.split("/").filter(Boolean);
-    const languageNames = Intl.DisplayNames.supportedLocalesOf(["en"]);
+    const languageNames = Intl.DisplayNames.supportedLocalesOf([lang]);
 
     let baseUrl = pathname;
     if (languageNames.includes(lang)) baseUrl += `/${lang}`;
