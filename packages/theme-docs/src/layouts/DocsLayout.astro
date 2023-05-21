@@ -44,7 +44,7 @@ const paginate = pagination.next || pagination.prev;
   <article class="wrapper">
     <main class="page-content">
       <Show when={showBreadcrumbs}>
-        <Breadcrumbs sidebar={sidebar} />
+        <Breadcrumbs sidebar={sidebar} collectionName={collection} />
       </Show>
 
       <slot />

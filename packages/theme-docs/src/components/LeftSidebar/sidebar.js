@@ -1,5 +1,6 @@
 import { createRequire } from "node:module";
 import { formatUrl } from "../../layouts/PulsarPage/lib";
+import { isLanguageCode } from "../../lib/util";
 
 const require = createRequire(import.meta.url);
 /**
@@ -51,10 +52,9 @@ export function useSidebar(mdFiles, pathname) {
 
   for (const { headings, slug } of mdFiles) {
     const [lang, ...segments] = slug.split("/").filter(Boolean);
-    const languageNames = Intl.DisplayNames.supportedLocalesOf([lang]);
 
     let baseUrl = pathname;
-    if (languageNames.includes(lang)) baseUrl += `/${lang}`;
+    if (isLanguageCode(lang)) baseUrl += `/${lang}`;
     else segments.unshift(lang);
 
     let dotPath = "";

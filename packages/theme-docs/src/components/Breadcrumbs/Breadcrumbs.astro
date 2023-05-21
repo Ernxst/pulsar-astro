@@ -6,10 +6,11 @@ import { useBreadcrumbs } from "./useBreadcrumbs";
 
 export interface Props {
   sidebar: Sidebar;
+  collectionName: string;
 }
 
-const { sidebar } = Astro.props;
-const crumbs = useBreadcrumbs(Astro.url.pathname, sidebar);
+const { sidebar, collectionName } = Astro.props;
+const crumbs = useBreadcrumbs(Astro.url.pathname, sidebar, collectionName);
 ---
 
 <nav aria-label="Breadcrumb">

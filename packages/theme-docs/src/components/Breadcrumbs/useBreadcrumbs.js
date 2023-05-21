@@ -1,6 +1,7 @@
 /* eslint-disable-next-line import/no-named-default */
 import { default as inflection } from "inflection";
 import { getValue } from "../LeftSidebar/sidebar";
+import { isLanguageCode } from "../../lib/util";
 
 /**
  * @typedef {object} Breadcrumb
@@ -9,26 +10,34 @@ import { getValue } from "../LeftSidebar/sidebar";
  */
 
 /**
- *
  * @param {string} url
  * @param {import("../LeftSidebar/sidebar").Sidebar} sidebar
+ * @param {string} collectionName
  * @returns {Breadcrumb[]}
  */
-export function useBreadcrumbs(url, sidebar) {
-  // TODO: This assumes the first segment is the docs path - may not be safe
-  const [docs, lang, ...segments] = url.split("/").filter(Boolean);
-  const languageNames = new Intl.DisplayNames([lang], { type: "language" });
-
-  // If the second segment is not a language code, add it back to the segments
-  const langName = languageNames.of(lang);
-  if (!langName) segments.unshift(lang);
-
-  let dotPath = "";
-  // TODO: Fix too many assumptions
+export function useBreadcrumbs(url, sidebar, collectionName) {
   /**
    * @type {Breadcrumb[]}
    */
-  const result = [{ title: "Documentation", url: `/${docs}` }];
+  const result = [];
+  const segments = url.split("/").filter(Boolean);
+
+  if (segments[0] === collectionName) {
+    result.push({
+      title: inflection.titleize(segments[0]),
+      url: `/${segments[0]}`,
+    });
+    segments.shift();
+  }
+
+  if (isLanguageCode(segments[0])) {
+    const languageCode = segments[0];
+    if (result[0]) result[0].url += `/${languageCode}`;
+
+    segments.shift();
+  }
+
+  let dotPath = "";
 
   /**
    * @param {string} path
@@ -41,9 +50,7 @@ export function useBreadcrumbs(url, sidebar) {
 
     if (section) {
       dotPath = path;
-      const { children, title, url } = section;
-      const href = url ?? children.index?.url ?? undefined;
-      result.push({ title, url: href });
+      result.push({ title: section.title, url: section.url });
       return true;
     }
 
@@ -58,14 +65,7 @@ export function useBreadcrumbs(url, sidebar) {
     if (addBreadcrumbSection(topLevelPath)) continue;
 
     // Check if the segment is a nested section and add it to the breadcrumb
-    const nestedPath = dotPath ? `${dotPath}.children.${segment}` : segment;
-    if (addBreadcrumbSection(nestedPath)) continue;
-
-    // I can't see how this would ever be reached, but just in case
-    const title = inflection.titleize(segment.replace("-", "_"));
-    const url = `/${segments.slice(0, i + 1).join("/")}`;
-
-    result.push({ title, url });
+    addBreadcrumbSection(`${dotPath}.children.${segment}`);
   }
 
   return result;
