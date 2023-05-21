@@ -10,11 +10,14 @@ const { headings } = Astro.props;
 
 <nav class="right-sidebar-nav">
   <ul class="sidebar-links">
-    <!-- TODO: Handle different depths -->
     {
-      headings.map(({ slug, text }) => (
+      headings.map(({ slug, text, depth }) => (
         <li>
-          <a class="sidebar-link" href={`#${slug}`}>
+          <a
+            class="sidebar-link"
+            href={`#${slug}`}
+            style={`--depth: ${depth - 1}`}
+          >
             {text.trim()}
           </a>
         </li>
@@ -86,6 +89,7 @@ const { headings } = Astro.props;
     padding: 0.3rem 0.2rem;
     padding-left: 1rem;
     position: relative;
+    padding-left: calc(var(--depth) * 1rem);
   }
 
   .sidebar-link.active {
