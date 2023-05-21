@@ -1,11 +1,8 @@
 ---
+import type { PulsarCollectionEntry } from "..";
 import Show from "../../components/ui/Show.astro";
 import Timestamp from "../../components/ui/Timestamp.astro";
-import type {
-  Page,
-  PulsarCollectionEntry,
-  PulsarDocsConfig,
-} from "../../config";
+import type { Page, PulsarDocsConfig } from "../../config";
 import { getLastUpdatedDate } from "./github";
 import { formatUrl } from "./lib";
 
@@ -21,8 +18,6 @@ const { url: projectUrl } = siteConfig.repositories.project ?? {};
 const { token, url } = siteConfig.repositories.documentation ?? {};
 const docsUrl = url ?? projectUrl;
 
-// TODO: Fix - this is wrong - it assumes the page will be in a subdirectory of /src/content
-// with the same name as the collection - Collections != pages
 const filepath = formatUrl(`/src/content/${collection}/${filePath}`);
 
 const shouldFetchLastUpdated = token && docsUrl;
