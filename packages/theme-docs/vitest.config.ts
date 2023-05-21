@@ -9,8 +9,14 @@ export default defineConfig({
       enabled: true,
       all: true,
       reporter: ["html", "text-summary", "json"],
-      include: ["**/*"],
-      exclude: ["**/__test__/**", "**/*.astro", "node_modules/**/*"],
+      include: ["src/**/*"],
+      exclude: [
+        "**/__test__/**",
+        "**/*.astro",
+        "src/**/index.js",
+        "src/config/app/schema.js",
+        "src/config/page/schemas.js",
+      ],
     },
   },
 });
