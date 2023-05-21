@@ -1,0 +1,89 @@
+---
+import type { MarkdownInstance } from "astro";
+import Navbar from "../../components/Navbar/Navbar.astro";
+import Show from "../../components/ui/Show.astro";
+import type { Page } from "../../config";
+import { usePulsarConfig } from "../../config/app/lib";
+import BaseLayout from "../BaseLayout.astro";
+import DocsLayout from "../DocsLayout.astro";
+import type { Props as DocsLayoutProps } from "../DocsLayout.astro";
+import PageLayout from "../PageLayout.astro";
+import type { Props as PageLayoutProps } from "../PageLayout.astro";
+import type { PulsarCollectionEntry } from "..";
+import { useEditUrl, usePagination } from "./lib";
+import ThemeProvider from "./ThemeProvider.astro";
+import LastUpdatedProvider from "./LastUpdatedProvider.astro";
+
+export interface Props {
+  page: PulsarCollectionEntry<Page>;
+}
+
+const { page } = Astro.props;
+const { Content, headings } = await page.render();
+
+const { navbar, footer, breadcrumbs, ...pageConfig } = page.data;
+const siteConfig = await usePulsarConfig();
+
+const isDocs = pageConfig.type === "docs";
+const showSidebar = isDocs ? pageConfig.sidebar : false;
+
+// TODO: This could also come from _meta.json
+const pageTitle = pageConfig.title ?? headings[0]?.text ?? "Untitled";
+
+// TODO: Incorrect glob patern - only works cos it's in this monorepo
+const pages = await Astro.glob<MarkdownInstance<Page>>(
+  "../../../../../**/src/content/**/*.{md,mdx}"
+);
+
+let config:
+  | { Layout: typeof DocsLayout; layoutProps: DocsLayoutProps }
+  | { Layout: typeof PageLayout; layoutProps: PageLayoutProps };
+
+if (isDocs) {
+  config = {
+    Layout: DocsLayout,
+    layoutProps: {
+      pages,
+      headings,
+      showBreadcrumbs: breadcrumbs,
+      showSidebar,
+      editUrl: useEditUrl({ siteConfig, pageCollection: page }),
+      pagination: usePagination({ siteConfig, pageConfig }),
+    },
+  };
+} else {
+  config = { Layout: PageLayout, layoutProps: {} };
+}
+---
+
+<BaseLayout pageTitle={pageTitle}>
+  <Show when={navbar}>
+    <div class="navbar-container">
+      <Navbar>
+        <slot name="navbar" />
+      </Navbar>
+    </div>
+  </Show>
+
+  <config.Layout {...config.layoutProps}>
+    <Content />
+    <slot />
+    <LastUpdatedProvider pageCollection={page} siteConfig={siteConfig} />
+    <ThemeProvider siteConfig={siteConfig} slot="sidebar-bottom" />
+  </config.Layout>
+
+  <Show when={footer}>
+    <footer>
+      <slot name="footer" />
+    </footer>
+  </Show>
+</BaseLayout>
+
+<style>
+  .navbar-container {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    z-index: 10;
+  }
+</style>

@@ -1,6 +1,9 @@
 ---
-import type { Section, Sidebar } from "../LeftSidebar/sidebar";
+import ArrowLeft from "../../icons/ArrowLeft.astro";
+import type { Sidebar } from "../LeftSidebar/sidebar";
 import Show from "../ui/Show.astro";
+import ArrowRight from "../../icons/ArrowRight.astro";
+import { usePrevNext } from "./usePrevNext";
 
 export interface Props {
   next: boolean;
@@ -8,38 +11,8 @@ export interface Props {
   sidebar: Sidebar;
 }
 
-function usePagination(sidebarData: Sidebar) {
-  const flatSidebar: Section[] = [];
-
-  function traverseDirectory(item: Section) {
-    flatSidebar.push(item);
-
-    if (item.children) {
-      for (const key in item.children) {
-        traverseDirectory(item.children[key]);
-      }
-    }
-  }
-
-  for (const key in sidebarData) {
-    traverseDirectory(sidebarData[key]);
-  }
-
-  const sidebar = flatSidebar.filter((item) => Boolean(item.url));
-
-  for (let i = 0; i < sidebar.length; i++) {
-    const item = sidebar[i];
-    if (item.url === Astro.url.pathname) {
-      return { next: sidebar[i + 1], prev: sidebar[i - 1] };
-    }
-  }
-
-  return null;
-}
-
 const { next, prev, sidebar } = Astro.props;
-
-const pagination = usePagination(sidebar);
+const pagination = usePrevNext(Astro.url.pathname, sidebar);
 const showPrev = prev && pagination && pagination.prev;
 const showNext = next && pagination && pagination.next;
 ---
@@ -54,20 +27,7 @@ const showNext = next && pagination && pagination.next;
           href={pagination?.prev?.url}
         >
           <span class="subtitle">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="12"
-              height="12"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="lucide lucide-arrow-left"
-              ><line x1="19" x2="5" y1="12" y2="12"></line><polyline
-                points="12 19 5 12 12 5"></polyline></svg
-            >
+            <ArrowLeft />
             Previous page</span
           >
           <span class="title">{pagination?.prev?.title}</span>
@@ -84,20 +44,7 @@ const showNext = next && pagination && pagination.next;
         >
           <span class="subtitle"
             >Next page
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="12"
-              height="12"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="lucide lucide-arrow-right"
-              ><line x1="5" x2="19" y1="12" y2="12"></line><polyline
-                points="12 5 19 12 12 19"></polyline></svg
-            >
+            <ArrowRight />
           </span>
           <span class="title">{pagination?.next?.title}</span>
         </a>

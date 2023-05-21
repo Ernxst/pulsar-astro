@@ -2,13 +2,13 @@
 import type { MarkdownInstance } from "astro";
 import Breadcrumbs from "../components/Breadcrumbs/Breadcrumbs.astro";
 import LeftSidebar from "../components/LeftSidebar/LeftSidebar.astro";
-import { buildSections } from "../components/LeftSidebar/sidebar";
+import { useSidebar } from "../components/LeftSidebar/sidebar";
+import type { Props as PaginationProps } from "../components/Pagination/Pagination.astro";
+import Pagination from "../components/Pagination/Pagination.astro";
 import type { Props as RightSidebarProps } from "../components/RightSidebar/RightSidebar.astro";
 import RightSidebar from "../components/RightSidebar/RightSidebar.astro";
 import Show from "../components/ui/Show.astro";
 import type { Page } from "../config";
-import Pagination from "../components/Pagination/Pagination.astro";
-import type { Props as PaginationProps } from "../components/Pagination/Pagination.astro";
 
 export interface Props extends RightSidebarProps {
   pages: MarkdownInstance<Page>[];
@@ -20,14 +20,14 @@ export interface Props extends RightSidebarProps {
 const { pages, headings, editUrl, showBreadcrumbs, showSidebar, pagination } =
   Astro.props;
 
-const sections = buildSections(pages);
+const sidebar = useSidebar(pages);
 const paginate = pagination.next || pagination.prev;
 ---
 
 <div class="docs-page">
   <Show when={showSidebar}>
     <aside class="left-sidebar">
-      <LeftSidebar sections={sections} />
+      <LeftSidebar sections={sidebar} />
       <slot name="sidebar-bottom" />
     </aside>
   </Show>
@@ -35,7 +35,7 @@ const paginate = pagination.next || pagination.prev;
   <article class="wrapper">
     <main class="page-content">
       <Show when={showBreadcrumbs}>
-        <Breadcrumbs sidebar={sections} />
+        <Breadcrumbs sidebar={sidebar} />
       </Show>
 
       <slot />
@@ -44,7 +44,7 @@ const paginate = pagination.next || pagination.prev;
         <Pagination
           next={pagination.next}
           prev={pagination.prev}
-          sidebar={sections}
+          sidebar={sidebar}
         />
       </Show>
     </main>

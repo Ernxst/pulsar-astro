@@ -2,8 +2,11 @@
   "extends": "@pulsar/tsconfig/tsconfig.base.json",
   "compilerOptions": {
     "baseUrl": ".",
-    "types": ["astro/client"]
+    "outDir": "./dist",
+    "types": ["astro/client", "vite/client"],
+    "allowJs": true,
+    "checkJs": true
   },
-  "include": ["./*", "./**/*"],
+  "include": ["./src/**/*"],
   "exclude": ["node_modules"]
 }

@@ -3,7 +3,7 @@ import type { Props as HeadCommonProps } from "../components/HeadCommon.astro";
 import HeadCommon from "../components/HeadCommon.astro";
 import type { Props as HeadSEOProps } from "../components/HeadSEO.astro";
 import HeadSEO from "../components/HeadSEO.astro";
-import { useConfig, useConfigHandler } from "../config/app/lib";
+import { useConfigHandler, usePulsarConfig } from "../config/app/lib";
 
 import "../styles/global.css";
 
@@ -12,7 +12,7 @@ export interface Props {
   lang?: string;
 }
 
-const config = await useConfig();
+const config = await usePulsarConfig();
 const defaultLocale = config.site.defaultLocale;
 const { pageTitle, lang = defaultLocale } = Astro.props;
 

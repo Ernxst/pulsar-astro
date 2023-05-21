@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { formatUrl } from "./lib";
 
 const ContributorSchema = z.object({
   author: z.object({
@@ -11,13 +12,6 @@ const Schema = z.object({
 });
 
 const GitHubApiResponseSchema = z.array(Schema);
-
-/**
- * @param {string} url
- */
-export function formatUrl(url) {
-  return url.replaceAll("//", "/");
-}
 
 /**
  * @param {string} url

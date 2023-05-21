@@ -2,7 +2,7 @@ import type { MarkdownHeading, MarkdownInstance } from "astro";
 
 export type { default as DocsLayout } from "./DocsLayout.astro";
 export type { default as PageLayout } from "./PageLayout.astro";
-export type { default as PulsarPage } from "./PulsarPage.astro";
+export type { default as PulsarPage } from "./PulsarPage/PulsarPage.astro";
 
 /**
  * Duplicated from 'astro:content' as Pulsar cannot import

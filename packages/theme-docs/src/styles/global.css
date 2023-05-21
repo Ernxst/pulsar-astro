@@ -3,6 +3,16 @@ body {
   height: 100%;
 }
 
+html.dark {
+  background-color: black;
+  color: white;
+}
+
+/* For the navbar to stick correctly */
+body {
+  height: auto;
+}
+
 .page-content h1,
 .page-content h2,
 .page-content h3,

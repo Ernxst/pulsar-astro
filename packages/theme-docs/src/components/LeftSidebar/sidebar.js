@@ -17,10 +17,10 @@ const inflection = require("inflection");
  */
 
 /**
- * @param {Pick<import("astro").MarkdownInstance, "getHeadings" | "file">[]} mdFiles
+ * @param {Pick<import("astro").MarkdownInstance<{}>, "getHeadings" | "file">[]} mdFiles
  * @returns {Sidebar}
  */
-export function buildSections(mdFiles) {
+export function useSidebar(mdFiles) {
   /**
    * @type {Sidebar}
    */
@@ -86,9 +86,8 @@ export function buildSections(mdFiles) {
 }
 
 /**
- *
  * @param {string} dotPath
- * @param {object} object
+ * @param {any} object
  * @returns
  */
 export function getValue(dotPath, object) {
@@ -96,17 +95,22 @@ export function getValue(dotPath, object) {
 }
 
 /**
- *
- * @param {object} object
+ * @param {any} object
  * @param {string} path
  * @param {any} value
  */
 function setValue(object, path, value) {
   const way = path.replace(/\[/g, ".").replace(/\]/g, "").split(".");
+  /**
+   * @type {string}
+   */
   const last = way.pop();
 
-  way.reduce((o, k, i, kk) => {
-    return (o[k] =
-      o[k] || (isFinite(i + 1 in kk ? kk[i + 1] : last) ? [] : {}));
+  way.reduce((obj, key, index, remainingKeys) => {
+    return (obj[key] =
+      obj[key] ||
+      (isFinite(index + 1 in remainingKeys ? remainingKeys[index + 1] : last)
+        ? []
+        : {}));
   }, object)[last] = value;
 }

@@ -1,6 +1,9 @@
 import { DocsConfigSchema } from "./schemas.js";
 
-export async function useConfig() {
+export async function usePulsarConfig() {
+  /**
+   * @type {Record<string, any>}
+   */
   const configs = import.meta.glob(
     [
       "../../../../../**/pulsar.config.ts",

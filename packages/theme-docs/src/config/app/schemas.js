@@ -52,8 +52,8 @@ const Site = z.object({
    * on a per-page basis.
    */
   description: z.string().or(Fn),
-  defaultLocale: z.string().default("en").optional(),
-  dir: z.enum(["ltr", "rtl"]).default("ltr").optional(),
+  defaultLocale: z.string().default("en"),
+  dir: z.enum(["ltr", "rtl"]).default("ltr"),
 });
 
 const I18n = z.object({
@@ -103,16 +103,16 @@ const Navbar = z
 
 export const DocsConfigSchema = z.object({
   site: Site,
-  i18n: I18n.default({}).optional(),
+  i18n: I18n.default({}),
 
-  navbar: Navbar.default({}).optional(),
+  navbar: Navbar.default({}),
 
-  footer: Footer.default({}).optional(),
+  footer: Footer.default({}),
 
   /**
    * Whether to show the dark mode toggle in the sidebar.
    */
-  darkMode: z.boolean().or(z.string()).default(true).optional(),
+  darkMode: z.boolean().or(z.string()).default(true),
 
   /**
    * Customise the navigation buttons that appear at the bottom of each
@@ -176,7 +176,6 @@ export const DocsConfigSchema = z.object({
       }),
     })
     .partial()
-    .optional()
     .default({}),
 
   seo: SEO.default({}),

@@ -16,7 +16,9 @@
   },
   "keywords": [
     "astro",
-    "docs"
+    "docs",
+    "ssg",
+    "ssr"
   ],
   "sideEffects": false,
   "publishConfig": {
@@ -39,10 +41,6 @@
       "types": "./src/layouts/index.d.ts",
       "import": "./src/layouts/index.js"
     },
-    "./layouts/*.astro": {
-      "types": "./src/layouts/*.astro",
-      "import": "./src/layouts/*.astro"
-    },
     "./package.json": "./src/package.json"
   },
   "main": "./src/index.js",
@@ -61,9 +59,6 @@
       ],
       "components/*.astro": [
         ".src/components/*.astro"
-      ],
-      "layouts/*.astro": [
-        "./src/layouts/*.astro"
       ]
     }
   },
@@ -96,8 +91,7 @@
     }
   },
   "dependencies": {
-    "class-variance-authority": "^0.6.0",
-    "inflection": "^2.0.1",
+    "inflection": "2.0.1",
     "zod": "3.21.4"
   },
   "devDependencies": {
@@ -105,6 +99,7 @@
     "@vitest/coverage-istanbul": "0.31.0",
     "publint": "0.1.11",
     "typescript": "5.0.4",
+    "vite": "4.3.8",
     "vitest": "0.31.0"
   }
 }

@@ -1,7 +1,7 @@
 import path from "node:path";
-import { describe, expect, test } from "vitest";
 import { titleize } from "inflection";
-import { buildSections } from "../sidebar";
+import { describe, expect, test } from "vitest";
+import { useSidebar } from "../sidebar";
 
 /**
  * @param {string} filePath
@@ -22,7 +22,7 @@ describe("sidebar.js", () => {
     const mdFiles = [mockMarkdownFile("/src/content/docs/en/introduction.md")];
 
     test("should return correct sidebar sections", () => {
-      const sections = buildSections(mdFiles);
+      const sections = useSidebar(mdFiles);
       expect(sections).toEqual({
         introduction: {
           title: "Introduction",
@@ -37,7 +37,7 @@ describe("sidebar.js", () => {
     const mdFiles = [mockMarkdownFile("/src/content/docs/en/index.md")];
 
     test("should return correct sidebar sections", () => {
-      const sections = buildSections(mdFiles);
+      const sections = useSidebar(mdFiles);
       expect(sections).toEqual({
         index: {
           title: "Index",
@@ -55,7 +55,7 @@ describe("sidebar.js", () => {
     ];
 
     test("should return correct sidebar sections", () => {
-      const sections = buildSections(mdFiles);
+      const sections = useSidebar(mdFiles);
       expect(sections).toEqual({
         introduction: {
           title: "Introduction",
@@ -77,7 +77,7 @@ describe("sidebar.js", () => {
     ];
 
     test("should return correct sidebar sections", () => {
-      const sections = buildSections(mdFiles);
+      const sections = useSidebar(mdFiles);
       expect(sections).toEqual({
         "getting-started": {
           title: "Getting Started",
@@ -101,7 +101,7 @@ describe("sidebar.js", () => {
     ];
 
     test("should return correct sidebar sections", () => {
-      const sections = buildSections(mdFiles);
+      const sections = useSidebar(mdFiles);
       expect(sections).toEqual({
         "getting-started": {
           title: "Getting Started",
@@ -133,7 +133,7 @@ describe("sidebar.js", () => {
     ];
 
     test("should return correct sidebar sections", () => {
-      const sections = buildSections(mdFiles);
+      const sections = useSidebar(mdFiles);
       expect(sections).toEqual({
         "getting-started": {
           title: "Getting Started",
@@ -186,7 +186,7 @@ describe("sidebar.js", () => {
     ];
 
     test("should return correct sidebar sections", () => {
-      const sections = buildSections(mdFiles);
+      const sections = useSidebar(mdFiles);
       expect(sections).toEqual({
         "getting-started": {
           title: "Getting Started",
@@ -237,7 +237,7 @@ describe("sidebar.js", () => {
     ];
 
     test("should return correct sidebar sections", () => {
-      const sections = buildSections(mdFiles);
+      const sections = useSidebar(mdFiles);
       expect(sections).toEqual({
         "getting-started": {
           title: "Getting Started",
@@ -281,7 +281,7 @@ describe("sidebar.js", () => {
     ];
 
     test("should return correct sidebar sections", () => {
-      const sections = buildSections(mdFiles);
+      const sections = useSidebar(mdFiles);
       expect(sections).toEqual({
         index: {
           title: "Index",
