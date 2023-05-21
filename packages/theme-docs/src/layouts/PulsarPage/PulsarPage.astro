@@ -1,5 +1,5 @@
 ---
-import type { MarkdownInstance } from "astro";
+import { getCollection } from "astro:content";
 import Navbar from "../../components/Navbar/Navbar.astro";
 import Show from "../../components/ui/Show.astro";
 import type { Page } from "../../config";
@@ -10,7 +10,7 @@ import type { Props as DocsLayoutProps } from "../DocsLayout.astro";
 import PageLayout from "../PageLayout.astro";
 import type { Props as PageLayoutProps } from "../PageLayout.astro";
 import type { PulsarCollectionEntry } from "..";
-import { useEditUrl, usePagination } from "./lib";
+import { collectionToMarkdownFiles, useEditUrl, usePagination } from "./lib";
 import ThemeProvider from "./ThemeProvider.astro";
 import LastUpdatedProvider from "./LastUpdatedProvider.astro";
 
@@ -24,31 +24,33 @@ const { Content, headings } = await page.render();
 const { navbar, footer, breadcrumbs, ...pageConfig } = page.data;
 const siteConfig = await usePulsarConfig();
 
-const isDocs = pageConfig.type === "docs";
-const showSidebar = isDocs ? pageConfig.sidebar : false;
-
 // TODO: This could also come from _meta.json
 const pageTitle = pageConfig.title ?? headings[0]?.text ?? "Untitled";
-
-// TODO: Incorrect glob patern - only works cos it's in this monorepo
-const pages = await Astro.glob<MarkdownInstance<Page>>(
-  "../../../../../**/src/content/**/*.{md,mdx}"
-);
 
 let config:
   | { Layout: typeof DocsLayout; layoutProps: DocsLayoutProps }
   | { Layout: typeof PageLayout; layoutProps: PageLayoutProps };
 
-if (isDocs) {
+if (pageConfig.type === "docs") {
+  const pages = await collectionToMarkdownFiles(page.collection, getCollection);
+
   config = {
     Layout: DocsLayout,
     layoutProps: {
       pages,
       headings,
       showBreadcrumbs: breadcrumbs,
-      showSidebar,
-      editUrl: useEditUrl({ siteConfig, pageCollection: page }),
+      showSidebar: pageConfig.sidebar,
+      editUrl: useEditUrl({
+        siteConfig,
+        pageCollection: {
+          collection: page.collection,
+          id: page.id,
+          data: pageConfig,
+        },
+      }),
       pagination: usePagination({ siteConfig, pageConfig }),
+      collection: page.collection,
     },
   };
 } else {

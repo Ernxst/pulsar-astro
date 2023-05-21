@@ -1,26 +1,35 @@
 ---
-import type { MarkdownInstance } from "astro";
 import Breadcrumbs from "../components/Breadcrumbs/Breadcrumbs.astro";
 import LeftSidebar from "../components/LeftSidebar/LeftSidebar.astro";
-import { useSidebar } from "../components/LeftSidebar/sidebar";
+import {
+  type MarkdownFile,
+  useSidebar,
+} from "../components/LeftSidebar/sidebar";
 import type { Props as PaginationProps } from "../components/Pagination/Pagination.astro";
 import Pagination from "../components/Pagination/Pagination.astro";
 import type { Props as RightSidebarProps } from "../components/RightSidebar/RightSidebar.astro";
 import RightSidebar from "../components/RightSidebar/RightSidebar.astro";
 import Show from "../components/ui/Show.astro";
-import type { Page } from "../config";
 
 export interface Props extends RightSidebarProps {
-  pages: MarkdownInstance<Page>[];
+  pages: MarkdownFile[];
   showBreadcrumbs: boolean;
   showSidebar: boolean;
   pagination: Omit<PaginationProps, "sidebar">;
+  collection: string;
 }
 
-const { pages, headings, editUrl, showBreadcrumbs, showSidebar, pagination } =
-  Astro.props;
+const {
+  pages,
+  headings,
+  editUrl,
+  showBreadcrumbs,
+  showSidebar,
+  pagination,
+  collection,
+} = Astro.props;
 
-const sidebar = useSidebar(pages);
+const sidebar = useSidebar(pages, `/${collection}`);
 const paginate = pagination.next || pagination.prev;
 ---
 

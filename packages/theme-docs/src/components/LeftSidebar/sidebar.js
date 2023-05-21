@@ -1,5 +1,5 @@
 import { createRequire } from "node:module";
-import path from "node:path";
+import { formatUrl } from "../../layouts/PulsarPage/lib";
 
 const require = createRequire(import.meta.url);
 /**
@@ -17,69 +17,71 @@ const inflection = require("inflection");
  */
 
 /**
- * @param {Pick<import("astro").MarkdownInstance<{}>, "getHeadings" | "file">[]} mdFiles
+ * @typedef {object} MarkdownFile
+ * @property {string[]} headings
+ * @property {string} slug
+ */
+
+/**
+ * @param {MarkdownFile[]} mdFiles
+ * @param {string} pathname
  * @returns {Sidebar}
  */
-export function useSidebar(mdFiles) {
+export function useSidebar(mdFiles, pathname) {
   /**
    * @type {Sidebar}
    */
   const sidebar = {};
 
-  for (const mdFile of mdFiles) {
-    const [{ text }] = mdFile.getHeadings();
-    const filePath = mdFile.file;
-    const slug = filePath
-      .replace(/.*\/src\/content/, "")
-      .replace(path.extname(filePath), "");
+  /**
+   * @param {string} dotPath
+   * @param {string} rootSegment
+   * @param {Section} section
+   */
+  function addSection(dotPath, rootSegment, section) {
+    const path = dotPath === "" ? rootSegment : dotPath;
+    const existing = getValue(path, sidebar) ?? {};
+    const merged = {
+      title: existing.title ?? section.title,
+      url: existing.url ?? section.url,
+      children: { ...existing.children, ...section.children },
+    };
+    setValue(sidebar, path, merged);
+  }
 
-    const [first, ...segments] = slug
-      .split("/")
-      .filter(Boolean)
-      // TODO: Too many assumptions
-      .filter((s) => s !== "docs" && s !== "en");
+  for (const { headings, slug } of mdFiles) {
+    const [lang, ...segments] = slug.split("/").filter(Boolean);
+    const languageNames = Intl.DisplayNames.supportedLocalesOf(["en"]);
 
-    let dotPath = first;
+    let baseUrl = pathname;
+    if (languageNames.includes(lang)) baseUrl += `/${lang}`;
+    else segments.unshift(lang);
+
+    let dotPath = "";
 
     for (let i = 0; i < segments.length; i++) {
-      const existing = getValue(dotPath, sidebar);
-      if (!existing) {
-        const previousPart = segments[i - 1] ?? first;
-        const asUrl = dotPath.replaceAll(".children.", "/");
-        const regexString = `(/\.*?)\/(${asUrl})`;
-        const regex = new RegExp(regexString);
-        const match = slug.match(regex);
+      const segment = segments[i];
+      if (segment === "index") continue;
 
-        if (!match) throw new Error("No match");
+      if (dotPath !== "") dotPath += ".children.";
+      dotPath += segment;
 
-        const [, prefix] = match;
-        const url = `${prefix}/${asUrl}`;
-        const isIndexPage = url.endsWith("index");
+      const nextSegment = segments[i + 1];
+      const url = `${baseUrl}/${segments.slice(0, i + 1).join("/")}`;
 
-        /**
-         * @type {Section}
-         */
-        const parent = {
-          title: inflection.titleize(previousPart.replace("-", "_")),
-          url: isIndexPage ? url.replace("/index", "") : undefined,
-          children: {},
-        };
-        setValue(sidebar, dotPath, parent);
-      }
-
-      dotPath += ".";
-      dotPath += "children";
-      dotPath += ".";
-      dotPath += segments[i];
+      addSection(dotPath, segment, {
+        title: inflection.titleize(segments[i].replace("-", "_")),
+        url: nextSegment === "index" ? formatUrl(url) : undefined,
+        children: {},
+      });
     }
 
-    const isIndexPage = slug.endsWith("index");
-    const url = isIndexPage ? slug.replace("/index", "") : slug;
-    /**
-     * @type {Section}
-     */
-    const section = { title: text, url, children: {} };
-    setValue(sidebar, dotPath, section);
+    const url = slug.replace(/\/index$/, "");
+    addSection(dotPath, segments[0], {
+      title: headings[0],
+      url: formatUrl(`${pathname}/${url}`),
+      children: {},
+    });
   }
 
   return sidebar;

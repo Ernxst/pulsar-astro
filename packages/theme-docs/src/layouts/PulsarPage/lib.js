@@ -2,7 +2,36 @@
  * @param {string} url
  */
 export function formatUrl(url) {
-  return url.replaceAll("//", "/");
+  const protocolIndex = url.indexOf("://");
+  let formattedUrl = url;
+
+  if (protocolIndex !== -1) {
+    const protocol = url.substring(0, protocolIndex + 3);
+    const restOfUrl = url.substring(protocolIndex + 3);
+    const replacedUrl = restOfUrl.replace(/\/\//g, "/");
+    formattedUrl = protocol + replacedUrl;
+  } else {
+    formattedUrl = url.replace(/\/\//g, "/");
+  }
+
+  return formattedUrl.replace(/\/$/, "");
+}
+
+/**
+ *
+ * @param {string} collection
+ * @param {(collection: string) => Promise<import("..").PulsarCollectionEntry<import("../../config").Page>[]>} getCollection
+ * @returns {Promise<import("src/components/LeftSidebar/sidebar").MarkdownFile[]>}
+ */
+export async function collectionToMarkdownFiles(collection, getCollection) {
+  const entries = await getCollection(collection);
+
+  return Promise.all(
+    entries.map(async (p) => {
+      const { headings } = await p.render();
+      return { slug: p.slug, headings: headings.map((h) => h.text) };
+    })
+  );
 }
 
 /**
@@ -38,8 +67,8 @@ export function usePagination(options) {
 
 /**
  * @typedef {object} EditUrlOptions
- * @property {import("../../config").PulsarDocsConfig} siteConfig;
- * @property {import("..").PulsarCollectionEntry<import("../../config").Page>} pageCollection;
+ * @property {Pick<import("../../config").PulsarDocsConfig, "repositories">} siteConfig;
+ * @property {Pick<import("..").PulsarCollectionEntry<Pick<import("../../config").DocsPage, "type" | "editInGitHub">>, "collection" | "id" | "data">} pageCollection;
  */
 
 /**
@@ -48,16 +77,13 @@ export function usePagination(options) {
 export function useEditUrl(options) {
   const { siteConfig, pageCollection } = options;
   const { collection, id: filePath, data: pageConfig } = pageCollection;
-  const isDocs = pageConfig.type === "docs";
+  const showLink = pageConfig.editInGitHub !== false;
+  if (!showLink) return null;
 
   const { url: projectUrl } = siteConfig.repositories.project ?? {};
-  const { url } = siteConfig.repositories.documentation ?? {};
-  const docsUrl = url ?? projectUrl;
+  const { url: documentationUrl } = siteConfig.repositories.documentation ?? {};
+  const docsUrl = documentationUrl ?? projectUrl;
 
-  // TODO: Fix - this is wrong - it assumes the page will be in a subdirectory of /src/content
-  // with the same name as the collection - Collections != pages
   const filepath = formatUrl(`/src/content/${collection}/${filePath}`);
-  const showLink = isDocs ? pageConfig.editInGitHub !== false : true;
-  const link = docsUrl ? formatUrl(`${docsUrl}/${filepath}`) : undefined;
-  return showLink ? link : undefined;
+  return docsUrl ? formatUrl(`${docsUrl}/${filepath}`) : null;
 }
