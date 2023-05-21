@@ -80,6 +80,11 @@ const { headings } = Astro.props;
     line-height: 24px;
   }
 
+  .sidebar-link[style*="--depth: 1"] {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+
   .sidebar-link {
     width: 100%;
     white-space: nowrap;
@@ -95,6 +100,7 @@ const { headings } = Astro.props;
   .sidebar-link.active {
     font-weight: 500;
     pointer-events: none;
+    color: blue;
   }
 
   .sidebar-link.active::before {
