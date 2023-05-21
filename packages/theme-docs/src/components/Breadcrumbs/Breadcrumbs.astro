@@ -59,6 +59,11 @@ const crumbs = useBreadcrumbs(Astro.url.pathname, sidebar, collectionName);
     text-overflow: ellipsis;
   }
 
+  .crumbs li > a.breadcrumb {
+    text-decoration: none;
+    color: unset;
+  }
+
   .breadcrumb[aria-current="page"] {
     font-weight: 600;
     pointer-events: none;
