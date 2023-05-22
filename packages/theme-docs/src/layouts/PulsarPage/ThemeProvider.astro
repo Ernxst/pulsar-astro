@@ -11,8 +11,10 @@ export interface Props {
 const { siteConfig } = Astro.props;
 
 const darkMode = siteConfig.darkMode;
-// TODO: Should be based on site name
-const storageKey = typeof darkMode === "string" ? darkMode : "pulsar-theme";
+const storageKey =
+  typeof darkMode === "string"
+    ? darkMode
+    : `${siteConfig.site.siteTitle}-theme`;
 
 const themes: Theme[] = [
   {
