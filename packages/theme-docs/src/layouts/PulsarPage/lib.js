@@ -32,7 +32,11 @@ export async function collectionToMarkdownFiles(collection, getCollection) {
   return Promise.all(
     entries.map(async (p) => {
       const { headings } = await p.render();
-      return { slug: p.slug, headings: headings.map((h) => h.text) };
+      return {
+        slug: p.slug,
+        headings: headings.map((h) => h.text),
+        filepath: p.id,
+      };
     })
   );
 }

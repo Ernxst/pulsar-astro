@@ -1,6 +1,6 @@
 /* eslint-disable-next-line import/no-named-default */
 import { default as inflection } from "inflection";
-import { getValue } from "../LeftSidebar/sidebar";
+import { getValue } from "../LeftSidebar/util";
 import { isLanguageCode } from "../../lib/util";
 
 /**

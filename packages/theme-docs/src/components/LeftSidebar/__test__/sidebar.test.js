@@ -1,19 +1,6 @@
-import path from "node:path";
-import { titleize } from "inflection";
 import { describe, expect, test } from "vitest";
 import { useSidebar } from "../sidebar";
-
-/**
- * @param {string} slug
- * @returns MarkdownFile
- */
-function mockMarkdownFile(slug) {
-  const baseName = path.basename(slug, path.extname(slug));
-  return {
-    slug,
-    headings: [titleize(baseName.replaceAll("-", "_"))],
-  };
-}
+import { mockMarkdownFile } from "./test-lib";
 
 describe("sidebar.js", () => {
   describe("Without a lang code", () => {

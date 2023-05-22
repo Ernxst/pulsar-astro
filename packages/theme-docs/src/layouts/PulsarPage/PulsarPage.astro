@@ -25,7 +25,6 @@ const { Content, headings } = await page.render();
 const { navbar, footer, breadcrumbs, ...pageConfig } = page.data;
 const siteConfig = await usePulsarConfig();
 
-// TODO: This could also come from _meta.json
 const pageTitle = pageConfig.title ?? headings[0]?.text ?? "Untitled";
 
 const pathname = Astro.url.pathname;

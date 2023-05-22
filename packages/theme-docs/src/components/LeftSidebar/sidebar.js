@@ -1,6 +1,7 @@
 import { createRequire } from "node:module";
 import { formatUrl } from "../../layouts/PulsarPage/lib";
 import { isLanguageCode } from "../../lib/util";
+import { getValue, setValue, sortFilesByMeta, sortSidebar } from "./util";
 
 const require = createRequire(import.meta.url);
 /**
@@ -16,19 +17,21 @@ const inflection = require("inflection");
  *
  * @typedef {Record<string, Section>} Sidebar
  */
-
 /**
  * @typedef {object} MarkdownFile
  * @property {string[]} headings
  * @property {string} slug
+ * @property {string} filepath
  */
 
 /**
  * @param {MarkdownFile[]} mdFiles
  * @param {string} pathname
+ * @param {Record<string, import("src/config").MetaJson>} metaJsons
  * @returns {Sidebar}
  */
-export function useSidebar(mdFiles, pathname) {
+export function useSidebar(mdFiles, pathname, metaJsons = {}) {
+  mdFiles = sortFilesByMeta(mdFiles, metaJsons);
   /**
    * @type {Sidebar}
    */
@@ -90,35 +93,5 @@ export function useSidebar(mdFiles, pathname) {
     });
   }
 
-  return sidebar;
-}
-
-/**
- * @param {string} dotPath
- * @param {any} object
- * @returns
- */
-export function getValue(dotPath, object) {
-  return dotPath.split(".").reduce((o, i) => o[i], object);
-}
-
-/**
- * @param {any} object
- * @param {string} path
- * @param {any} value
- */
-function setValue(object, path, value) {
-  const way = path.replace(/\[/g, ".").replace(/\]/g, "").split(".");
-  /**
-   * @type {string}
-   */
-  const last = way.pop();
-
-  way.reduce((obj, key, index, remainingKeys) => {
-    return (obj[key] =
-      obj[key] ||
-      (isFinite(index + 1 in remainingKeys ? remainingKeys[index + 1] : last)
-        ? []
-        : {}));
-  }, object)[last] = value;
+  return sortSidebar(sidebar, pathname, metaJsons);
 }

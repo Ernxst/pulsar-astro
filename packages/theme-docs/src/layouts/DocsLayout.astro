@@ -1,4 +1,5 @@
 ---
+import { z } from "zod";
 import Breadcrumbs from "../components/Breadcrumbs/Breadcrumbs.astro";
 import LeftSidebar from "../components/LeftSidebar/LeftSidebar.astro";
 import {
@@ -10,6 +11,7 @@ import Pagination from "../components/Pagination/Pagination.astro";
 import type { Props as RightSidebarProps } from "../components/RightSidebar/RightSidebar.astro";
 import RightSidebar from "../components/RightSidebar/RightSidebar.astro";
 import Show from "../components/ui/Show.astro";
+import { MetaJsonSchema } from "../config/page/schemas";
 
 export interface Props extends RightSidebarProps {
   pages: MarkdownFile[];
@@ -29,7 +31,15 @@ const {
   collection,
 } = Astro.props;
 
-const sidebar = useSidebar(pages, `/${collection}`);
+const metas = import.meta.glob("../../../../**/src/content/**/_meta.json", {
+  eager: true,
+  import: "default",
+});
+
+const schema = z.record(MetaJsonSchema);
+const metaJsons = schema.parse(metas);
+
+const sidebar = useSidebar(pages, `/${collection}`, metaJsons);
 const paginate = pagination.next || pagination.prev;
 ---
 
