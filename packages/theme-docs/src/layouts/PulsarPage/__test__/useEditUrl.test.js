@@ -54,7 +54,7 @@ describe("useEditUrl", () => {
       });
 
       expect(editUrl).toBe(
-        "https://github.com/owner/repo/src/content/docs/en/overview/core-concepts.md"
+        "https://github.com/owner/repo/edit/src/content/docs/en/overview/core-concepts.md"
       );
     });
   });
@@ -75,7 +75,7 @@ describe("useEditUrl", () => {
       });
 
       expect(editUrl).toBe(
-        "https://github.com/owner/repo/src/content/docs/en/overview/core-concepts.md"
+        "https://github.com/owner/repo/edit/src/content/docs/en/overview/core-concepts.md"
       );
     });
   });
@@ -96,7 +96,7 @@ describe("useEditUrl", () => {
       });
 
       expect(editUrl).toBe(
-        "https://github.com/owner/repo/src/content/docs/en/overview/core-concepts.md"
+        "https://github.com/owner/repo/edit/src/content/docs/en/overview/core-concepts.md"
       );
     });
   });
@@ -117,7 +117,7 @@ describe("useEditUrl", () => {
       });
 
       expect(editUrl).toBe(
-        "https://github.com/owner/repo/src/content/docs/en/overview/core-concepts.md"
+        "https://github.com/owner/repo/edit/src/content/docs/en/overview/core-concepts.md"
       );
     });
   });

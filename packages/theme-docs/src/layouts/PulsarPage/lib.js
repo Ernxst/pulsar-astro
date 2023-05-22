@@ -83,8 +83,20 @@ export function useEditUrl(options) {
   const { url: projectUrl } = siteConfig.repositories.project ?? {};
   const { url: documentationUrl } = siteConfig.repositories.documentation ?? {};
   const docsUrl = documentationUrl ?? projectUrl;
-  // TODO: Add `edit` into the URL after the owner/repo
 
   const filepath = formatUrl(`/src/content/${collection}/${filePath}`);
-  return docsUrl ? formatUrl(`${docsUrl}/${filepath}`) : null;
+  const githubUrl = docsUrl ? formatUrl(`${docsUrl}/${filepath}`) : null;
+
+  if (githubUrl) {
+    const { origin, pathname } = new URL(githubUrl);
+    const [owner, repo, ...segments] = pathname.split("/").filter(Boolean);
+
+    // Note: if your branch is named tree, this produce an invalid url
+    if (segments[0] === "tree") segments.shift();
+    segments.unshift(owner, repo, "edit");
+
+    return formatUrl(`${origin}/${segments.join("/")}`);
+  }
+
+  return null;
 }
