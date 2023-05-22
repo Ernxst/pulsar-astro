@@ -1,52 +1,38 @@
 ---
+import type { PulsarDocsConfig } from "src/config";
 import type { Props as HeadCommonProps } from "../components/HeadCommon.astro";
 import HeadCommon from "../components/HeadCommon.astro";
 import type { Props as HeadSEOProps } from "../components/HeadSEO.astro";
 import HeadSEO from "../components/HeadSEO.astro";
-import { useConfigHandler, usePulsarConfig } from "../config/app/lib";
 
 import "../styles/global.css";
 
 export interface Props {
+  dir: "ltr" | "rtl";
+  siteTitle: string;
   pageTitle: string;
-  lang?: string;
+  description: string;
+  lang: string;
+  seo: PulsarDocsConfig["seo"];
 }
 
-const config = await usePulsarConfig();
-const defaultLocale = config.site.defaultLocale;
-const { pageTitle, lang = defaultLocale } = Astro.props;
-
-const pathname = Astro.url.pathname;
-const canonicalURL = Astro.url;
-
-const handler = useConfigHandler(config);
-const formattedTitle = await handler.title({ pathname, title: pageTitle });
-const formattedDescription = await handler.description({
-  pathname,
-  title: pageTitle,
-});
+const { pageTitle, siteTitle, description, lang, seo, dir } = Astro.props;
 
 const headCommonProps: HeadCommonProps = {};
 
 const headSeoProps: HeadSEOProps = {
-  site: {
-    title: config.site.siteTitle,
-    lang,
-  },
-  page: {
-    title: formattedTitle,
-    description: formattedDescription,
-  },
-  og: config.seo.openGraph,
-  twitter: config.seo.twitter,
-  canonicalUrl: canonicalURL.toString(),
+  site: { title: siteTitle, lang },
+  page: { title: pageTitle, description },
+  og: seo.openGraph,
+  twitter: seo.twitter,
+  canonicalUrl: Astro.url.toString(),
 };
 ---
 
-<html lang={lang} dir={config.site.dir}>
+<html lang={lang} dir={dir}>
   <head>
     <HeadCommon {...headCommonProps} />
-    <title>{formattedTitle}</title>
+    <title>{pageTitle}</title>
     <HeadSEO {...headSeoProps} />
   </head>
 

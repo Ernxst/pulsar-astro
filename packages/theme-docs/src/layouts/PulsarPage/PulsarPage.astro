@@ -3,13 +3,14 @@ import { getCollection } from "astro:content";
 import Navbar from "../../components/Navbar/Navbar.astro";
 import Show from "../../components/ui/Show.astro";
 import type { Page } from "../../config";
-import { usePulsarConfig } from "../../config/app/lib";
+import { useConfigHandler, usePulsarConfig } from "../../config/app/lib";
 import BaseLayout from "../BaseLayout.astro";
 import DocsLayout from "../DocsLayout.astro";
 import type { Props as DocsLayoutProps } from "../DocsLayout.astro";
 import PageLayout from "../PageLayout.astro";
 import type { Props as PageLayoutProps } from "../PageLayout.astro";
 import type { PulsarCollectionEntry } from "..";
+import { getLangFromPathname } from "../../lib/util";
 import { collectionToMarkdownFiles, useEditUrl, usePagination } from "./lib";
 import ThemeProvider from "./ThemeProvider.astro";
 import LastUpdatedProvider from "./LastUpdatedProvider.astro";
@@ -26,6 +27,20 @@ const siteConfig = await usePulsarConfig();
 
 // TODO: This could also come from _meta.json
 const pageTitle = pageConfig.title ?? headings[0]?.text ?? "Untitled";
+
+const pathname = Astro.url.pathname;
+const defaultLocale = siteConfig.site.defaultLocale;
+const lang = getLangFromPathname(pathname) ?? defaultLocale;
+
+const { siteTitle, dir } = siteConfig.site;
+const seo = siteConfig.seo ?? {};
+
+const handler = useConfigHandler(siteConfig);
+const formattedTitle = await handler.title({ pathname, title: pageTitle });
+const formattedDescription = await handler.description({
+  pathname,
+  title: pageTitle,
+});
 
 let config:
   | { Layout: typeof DocsLayout; layoutProps: DocsLayoutProps }
@@ -58,7 +73,14 @@ if (pageConfig.type === "docs") {
 }
 ---
 
-<BaseLayout pageTitle={pageTitle}>
+<BaseLayout
+  siteTitle={siteTitle}
+  pageTitle={formattedTitle}
+  description={formattedDescription}
+  lang={lang}
+  dir={dir}
+  seo={seo}
+>
   <Show when={navbar}>
     <div class="navbar-container">
       <Navbar>
