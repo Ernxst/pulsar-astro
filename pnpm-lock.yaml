@@ -92,6 +92,9 @@ importers:
 
   packages/theme-docs:
     dependencies:
+      '@napi-rs/simple-git':
+        specifier: 0.1.8
+        version: 0.1.8
       astro:
         specifier: ^2.4.0
         version: 2.4.0(@types/node@20.1.5)
@@ -1256,6 +1259,122 @@ packages:
       globby: 11.1.0
       read-yaml-file: 1.1.0
     dev: true
+
+  /@napi-rs/simple-git-android-arm-eabi@0.1.8:
+    resolution: {integrity: sha512-JJCejHBB1G6O8nxjQLT4quWCcvLpC3oRdJJ9G3MFYSCoYS8i1bWCWeU+K7Br+xT+D6s1t9q8kNJAwJv9Ygpi0g==}
+    engines: {node: '>= 10'}
+    cpu: [arm]
+    os: [android]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@napi-rs/simple-git-android-arm64@0.1.8:
+    resolution: {integrity: sha512-mraHzwWBw3tdRetNOS5KnFSjvdAbNBnjFLA8I4PwTCPJj3Q4txrigcPp2d59cJ0TC51xpnPXnZjYdNwwSI9g6g==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [android]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@napi-rs/simple-git-darwin-arm64@0.1.8:
+    resolution: {integrity: sha512-ufy/36eI/j4UskEuvqSH7uXtp3oXeLDmjQCfKJz3u5Vx98KmOMKrqAm2H81AB2WOtCo5mqS6PbBeUXR8BJX8lQ==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [darwin]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@napi-rs/simple-git-darwin-x64@0.1.8:
+    resolution: {integrity: sha512-Vb21U+v3tPJNl+8JtIHHT8HGe6WZ8o1Tq3f6p+Jx9Cz71zEbcIiB9FCEMY1knS/jwQEOuhhlI9Qk7d4HY+rprA==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [darwin]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@napi-rs/simple-git-linux-arm-gnueabihf@0.1.8:
+    resolution: {integrity: sha512-6BPTJ7CzpSm2t54mRLVaUr3S7ORJfVJoCk2rQ8v8oDg0XAMKvmQQxOsAgqKBo9gYNHJnqrOx3AEuEgvB586BuQ==}
+    engines: {node: '>= 10'}
+    cpu: [arm]
+    os: [linux]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@napi-rs/simple-git-linux-arm64-gnu@0.1.8:
+    resolution: {integrity: sha512-qfESqUCAA/XoQpRXHptSQ8gIFnETCQt1zY9VOkplx6tgYk9PCeaX4B1Xuzrh3eZamSCMJFn+1YB9Ut8NwyGgAA==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [linux]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@napi-rs/simple-git-linux-arm64-musl@0.1.8:
+    resolution: {integrity: sha512-G80BQPpaRmQpn8dJGHp4I2/YVhWDUNJwcCrJAtAdbKFDCMyCHJBln2ERL/+IEUlIAT05zK/c1Z5WEprvXEdXow==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [linux]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@napi-rs/simple-git-linux-x64-gnu@0.1.8:
+    resolution: {integrity: sha512-NI6o1sZYEf6vPtNWJAm9w8BxJt+LlSFW0liSjYe3lc3e4dhMfV240f0ALeqlwdIldRPaDFwZSJX5/QbS7nMzhw==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [linux]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@napi-rs/simple-git-linux-x64-musl@0.1.8:
+    resolution: {integrity: sha512-wljGAEOW41er45VTiU8kXJmO480pQKzsgRCvPlJJSCaEVBbmo6XXbFIXnZy1a2J3Zyy2IOsRB4PVkUZaNuPkZQ==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [linux]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@napi-rs/simple-git-win32-arm64-msvc@0.1.8:
+    resolution: {integrity: sha512-QuV4QILyKPfbWHoQKrhXqjiCClx0SxbCTVogkR89BwivekqJMd9UlMxZdoCmwLWutRx4z9KmzQqokvYI5QeepA==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [win32]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@napi-rs/simple-git-win32-x64-msvc@0.1.8:
+    resolution: {integrity: sha512-UzNS4JtjhZhZ5hRLq7BIUq+4JOwt1ThIKv11CsF1ag2l99f0123XvfEpjczKTaa94nHtjXYc2Mv9TjccBqYOew==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [win32]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@napi-rs/simple-git@0.1.8:
+    resolution: {integrity: sha512-BvOMdkkofTz6lEE35itJ/laUokPhr/5ToMGlOH25YnhLD2yN1KpRAT4blW9tT8281/1aZjW3xyi73bs//IrDKA==}
+    engines: {node: '>= 10'}
+    optionalDependencies:
+      '@napi-rs/simple-git-android-arm-eabi': 0.1.8
+      '@napi-rs/simple-git-android-arm64': 0.1.8
+      '@napi-rs/simple-git-darwin-arm64': 0.1.8
+      '@napi-rs/simple-git-darwin-x64': 0.1.8
+      '@napi-rs/simple-git-linux-arm-gnueabihf': 0.1.8
+      '@napi-rs/simple-git-linux-arm64-gnu': 0.1.8
+      '@napi-rs/simple-git-linux-arm64-musl': 0.1.8
+      '@napi-rs/simple-git-linux-x64-gnu': 0.1.8
+      '@napi-rs/simple-git-linux-x64-musl': 0.1.8
+      '@napi-rs/simple-git-win32-arm64-msvc': 0.1.8
+      '@napi-rs/simple-git-win32-x64-msvc': 0.1.8
+    dev: false
 
   /@nodelib/fs.scandir@2.1.5:
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}

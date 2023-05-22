@@ -19,3 +19,11 @@ export function getLangFromPathname(pathname) {
   const urlLocale = isLanguageCode(first) ? first : second;
   return isLanguageCode(urlLocale) ? urlLocale : undefined;
 }
+
+/**
+ * Standardised way to get the current working directory
+ * @returns {string}
+ */
+export function useCWD() {
+  return process.cwd();
+}

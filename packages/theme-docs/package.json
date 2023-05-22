@@ -91,6 +91,7 @@
     }
   },
   "dependencies": {
+    "@napi-rs/simple-git": "0.1.8",
     "inflection": "2.0.1",
     "zod": "3.21.4"
   },

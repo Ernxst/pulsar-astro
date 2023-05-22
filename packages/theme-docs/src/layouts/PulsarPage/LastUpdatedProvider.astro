@@ -4,7 +4,7 @@ import type { PulsarCollectionEntry } from "..";
 import Show from "../../components/ui/Show.astro";
 import Timestamp from "../../components/ui/Timestamp.astro";
 import type { Page, PulsarDocsConfig } from "../../config";
-import { getLastUpdatedDate } from "./github";
+import { getLastUpdatedDate } from "../../lib/github";
 import { formatUrl } from "./lib";
 
 export interface Props {
@@ -13,18 +13,10 @@ export interface Props {
 }
 
 const { pageCollection, siteConfig } = Astro.props;
-const { collection, id: filePath } = pageCollection;
+const { collection, id: relativeToProject } = pageCollection;
 
-const { url: projectUrl } = siteConfig.repositories.project ?? {};
-const { token, url } = siteConfig.repositories.documentation ?? {};
-const docsUrl = url ?? projectUrl;
-
-const filepath = formatUrl(`/src/content/${collection}/${filePath}`);
-
-const shouldFetchLastUpdated = token && docsUrl;
-const lastUpdated = shouldFetchLastUpdated
-  ? await getLastUpdatedDate({ token, repoUrl: docsUrl, file: filepath })
-  : undefined;
+const filepath = formatUrl(`/src/content/${collection}/${relativeToProject}`);
+const lastUpdated = await getLastUpdatedDate(filepath);
 
 const { pathname } = Astro.url;
 const locale = getLangFromPathname(pathname) ?? siteConfig.site.defaultLocale;

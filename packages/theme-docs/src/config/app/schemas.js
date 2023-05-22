@@ -145,20 +145,6 @@ export const DocsConfigSchema = z.object({
        */
       documentation: z.object({
         /**
-         * A GitHub personal access token. This is used to fetch the repository
-         * metadata from the GitHub API so that the 'Last updated' date can be
-         * shown.
-         *
-         * This is optional, but if you don't provide a token, the 'Last updated'
-         * date will not be shown.
-         *
-         * **This token should be kept secret - preferably as an environment variable -
-         *  and NEVER committed to source control.**
-         *
-         * @see https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token
-         */
-        token: z.string().optional(),
-        /**
          * Use this option if your documentation is in a different repository to
          * the project itself referenced in {@link repo}.
          *
