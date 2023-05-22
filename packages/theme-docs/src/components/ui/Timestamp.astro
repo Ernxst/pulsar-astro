@@ -16,6 +16,7 @@ const { timestamp, locale } = Astro.props;
         month: "long",
         year: "numeric",
       })
-    }
+    },
+    {timestamp.toLocaleTimeString(locale)}
   </time>
 </span>
