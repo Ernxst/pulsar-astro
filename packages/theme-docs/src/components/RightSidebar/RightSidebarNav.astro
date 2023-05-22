@@ -31,23 +31,31 @@ const { headings } = Astro.props;
   // Create a new Intersection Observer instance
   const observer = new IntersectionObserver(
     (entries) => {
+      let activeHref = null;
+      for (const entry of entries) {
+        if (entry.isIntersecting) {
+          activeHref = `#${entry.target.id}`;
+          break;
+        }
+      }
+
       const nav = document.querySelector(".right-sidebar-nav");
       const sidebarLinks = nav.querySelectorAll("a");
 
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const headerId = entry.target.getAttribute("id");
-          const href = `#${headerId}`;
-
-          sidebarLinks.forEach((link) => {
-            const url = new URL(link.href);
-            if (url.hash === href) link.classList.add("active");
-            else link.classList.remove("active");
-          });
+      if (activeHref) {
+        for (const link of sidebarLinks) {
+          const url = new URL(link.href);
+          if (url.hash === activeHref) link.classList.add("active");
+          else link.classList.remove("active");
         }
-      });
+      }
     },
-    { threshold: 0.8 }
+    {
+      // Negative top margin accounts for `scroll-margin`.
+      // Negative bottom margin means heading needs to be towards top of viewport to trigger intersection.
+      rootMargin: "-64px 0% -66%",
+      threshold: 1,
+    }
   );
 
   // Ignore the title heading
