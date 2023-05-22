@@ -26,6 +26,11 @@ const { headings } = Astro.props;
   </ul>
 </nav>
 <script>
+  // Ignore the title heading
+  const pageHeaders = document.querySelectorAll(
+    ".page-content h2, .page-content h3, .page-content h4, .page-content h5, .page-content h6"
+  );
+
   const observer = new IntersectionObserver(
     (entries) => {
       let activeHref = null;
@@ -50,14 +55,9 @@ const { headings } = Astro.props;
     {
       // Negative top margin accounts for `scroll-margin`.
       // Negative bottom margin means heading needs to be towards top of viewport to trigger intersection.
-      rootMargin: "-64px 0% -66%",
+      rootMargin: `-64px 0% -40%`,
       threshold: 1,
     }
-  );
-
-  // Ignore the title heading
-  const pageHeaders = document.querySelectorAll(
-    ".page-content h2, .page-content h3, .page-content h4, .page-content h5, .page-content h6"
   );
 
   pageHeaders.forEach((header) => {
