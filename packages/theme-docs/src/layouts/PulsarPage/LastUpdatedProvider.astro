@@ -1,4 +1,5 @@
 ---
+import { getLangFromPathname } from "../../lib/util";
 import type { PulsarCollectionEntry } from "..";
 import Show from "../../components/ui/Show.astro";
 import Timestamp from "../../components/ui/Timestamp.astro";
@@ -25,8 +26,8 @@ const lastUpdated = shouldFetchLastUpdated
   ? await getLastUpdatedDate({ token, repoUrl: docsUrl, file: filepath })
   : undefined;
 
-// TODO: This should be the locale of the page and should fallback to the site default
-const locale = siteConfig.site.defaultLocale;
+const { pathname } = Astro.url;
+const locale = getLangFromPathname(pathname) ?? siteConfig.site.defaultLocale;
 ---
 
 <Show when={lastUpdated}>

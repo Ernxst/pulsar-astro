@@ -10,3 +10,9 @@ export function isLanguageCode(code) {
     return false;
   }
 }
+
+export function getLangFromPathname(pathname) {
+  const [first, second] = pathname.split("/").filter(Boolean);
+  const urlLocale = isLanguageCode(first) ? first : second;
+  return isLanguageCode(urlLocale) ? urlLocale : undefined;
+}
