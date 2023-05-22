@@ -11,6 +11,9 @@ export function isLanguageCode(code) {
   }
 }
 
+/**
+ * @param {string} pathname
+ */
 export function getLangFromPathname(pathname) {
   const [first, second] = pathname.split("/").filter(Boolean);
   const urlLocale = isLanguageCode(first) ? first : second;
