@@ -1,3 +1,6 @@
+import path from "node:path";
+import { resolveRelativeToRepoRoot, useRepository } from "../../lib/github";
+
 /**
  * @param {string} url
  */
@@ -84,18 +87,19 @@ export function useEditUrl(options) {
   const { url: documentationUrl } = siteConfig.repositories.documentation ?? {};
   const docsUrl = documentationUrl ?? projectUrl;
 
-  const filepath = formatUrl(`/src/content/${collection}/${filePath}`);
-  const githubUrl = docsUrl ? formatUrl(`${docsUrl}/${filepath}`) : null;
+  if (docsUrl) {
+    const relativePath = formatUrl(`/src/content/${collection}/${filePath}`);
+    const { repository } = useRepository();
+    const branch = repository.head().shorthand();
+    if (!branch) throw new Error("Could not find branch name");
 
-  if (githubUrl) {
-    const { origin, pathname } = new URL(githubUrl);
-    const [owner, repo, ...segments] = pathname.split("/").filter(Boolean);
+    const relativeToRepoRoot = resolveRelativeToRepoRoot(relativePath);
 
-    // Note: if your branch is named tree, this produce an invalid url
-    if (segments[0] === "tree") segments.shift();
-    segments.unshift(owner, repo, "edit");
+    const { origin, pathname } = new URL(docsUrl);
+    const [owner, repo] = pathname.split("/").filter(Boolean);
+    const joined = path.join(owner, repo, "edit", branch, relativeToRepoRoot);
 
-    return formatUrl(`${origin}/${segments.join("/")}`);
+    return `${origin}/${joined}`;
   }
 
   return null;
