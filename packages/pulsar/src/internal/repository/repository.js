@@ -52,33 +52,18 @@ export class PulsarRepository {
   }
 
   async branchName() {
-    const root = this.root();
-    const headsDir = join(root, ".git/refs/heads");
-    const remotesDir = join(root, ".git/refs/remotes");
+    console.log("branch", process.env.VERCEL_GIT_COMMIT_REF);
 
-    try {
-      const branchNames = fs.readdirSync(headsDir);
-      console.log({ branchNames });
-      const remoteDirs = fs.readdirSync(remotesDir);
-      console.log({ remoteDirs });
-      remoteDirs.forEach((remote) => {
-        const idx = branchNames.indexOf(remote);
-        if (idx > -1) branchNames.splice(idx, 1);
+    // Vercel does not clone the repo with the correct branch name or any remote info
+    if (process.env.VERCEL) return process.env.VERCEL_GIT_COMMIT_REF;
 
-        const remoteBranchesDir = join(remotesDir, remote);
-        if (fs.statSync(remoteBranchesDir).isDirectory()) {
-          const remoteFiles = fs.readdirSync(remoteBranchesDir);
-          console.log({ remoteFiles });
-          branchNames.push(...remoteFiles);
-        }
-      });
+    const [remote] = await this.repo.getRemotes();
+    console.log(remote);
+    const branch = await this.repo.branch(["-r", "--list", `${remote.name}/*`]);
+    console.log(branch);
 
-      console.log("done", { branchNames });
-      return branchNames.at(-1);
-    } catch (error) {
-      console.error("Error:", error);
-      return [];
-    }
+    const [branchName] = branch.all;
+    return branchName.replace(`${remote.name}/`, "");
   }
 
   /**
