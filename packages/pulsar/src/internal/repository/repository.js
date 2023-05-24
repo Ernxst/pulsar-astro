@@ -52,14 +52,11 @@ export class PulsarRepository {
   }
 
   async branchName() {
-    const remotes = await this.repo.getRemotes();
-    console.log(remotes);
-    const { name = "origin" } = remotes[0] ?? {};
-
-    const branch = await this.repo.branch(["-r", "--list", `${name}/*`]);
+    const branch = await this.repo.branch();
     console.log(branch);
+    console.log(await this.repo.branchLocal());
     const [branchName] = branch.all;
-    return branchName.replace(`${name}/`, "");
+    return branchName.includes("/") ? branchName.split("/")[1] : branchName;
   }
 
   /**
