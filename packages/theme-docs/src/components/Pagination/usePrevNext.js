@@ -1,3 +1,5 @@
+import { formatUrl } from "pulsar/internal";
+
 /**
  * @param {string} pathname
  * @param {import("../LeftSidebar/sidebar").Sidebar} sidebarData
@@ -28,10 +30,11 @@ export function usePrevNext(pathname, sidebarData) {
   }
 
   const sidebar = flatSidebar.filter((item) => Boolean(item.url));
+  pathname = formatUrl(pathname);
 
   for (let i = 0; i < sidebar.length; i++) {
     const item = sidebar[i];
-    if (item.url === pathname) {
+    if (formatUrl(item.url) === pathname) {
       return { next: sidebar[i + 1], prev: sidebar[i - 1] };
     }
   }
