@@ -52,12 +52,10 @@ export class PulsarRepository {
   }
 
   async branchName() {
-    // TODO: This is defaulting to master in CI, when it should be main
-    const branch = await this.repo.branch();
-    const local = await this.repo.branchLocal();
-    console.log({ branch });
-    console.log({ local });
-    return branch.current;
+    const [remote] = await this.repo.getRemotes();
+    const branch = await this.repo.branch(["-r", "--list", `${remote.name}/*`]);
+    const [branchName] = branch.all;
+    return branchName.replace(`${remote.name}/`, "");
   }
 
   /**
