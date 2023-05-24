@@ -42,6 +42,12 @@ const crumbs = useBreadcrumbs(Astro.url.pathname, sidebar, collectionName);
 </nav>
 
 <style>
+  .crumbs {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
   .crumbs,
   .crumbs li {
     display: flex;
