@@ -6,7 +6,7 @@ import { useCWD } from "../util.js";
 /**
  * @param {string} currentDir
  * @param {number} depth
- * @returns
+ * @returns {string | null}
  */
 function findNearestGitDirectory(currentDir = useCWD(), depth = 0) {
   const gitDirPath = join(currentDir, ".git");
