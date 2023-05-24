@@ -65,3 +65,5 @@ export const PulsarCollection = z
   .default({
     type: "docs",
   });
+
+export const PulsarContentCollection = PulsarCollection.or(PulsarMeta);
