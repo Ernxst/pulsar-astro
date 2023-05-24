@@ -58,9 +58,9 @@ export class PulsarRepository {
 
     try {
       const branchNames = fs.readdirSync(headsDir);
-
+      console.log({ branchNames });
       const remoteDirs = fs.readdirSync(remotesDir);
-      console.log({ remoteDirs, branchNames });
+      console.log({ remoteDirs });
       remoteDirs.forEach((remote) => {
         const idx = branchNames.indexOf(remote);
         if (idx > -1) branchNames.splice(idx, 1);
