@@ -45,15 +45,15 @@ The default header ordering would be: _Getting Started_, _Installation_, _Introd
 
 So, the resulting structure would be:
 
-```markdown "_meta.json"
+```
 .
 ├── src/
-│ └── content/
-│ └── docs/
-│ ├── \_meta.json
-│ ├── getting-started.md
-│ ├── installation.md
-│ └── introduction.md
+│   └── content/
+│       └── docs/
+│           ├── _meta.json
+│           ├── getting-started.md
+│           ├── installation.md
+│           └── introduction.md
 ├── package.json
 └── astro.config.mjs
 ```
@@ -62,19 +62,19 @@ It is important to note that a single `_meta.json` only affects the current (sub
 
 Visually, if you wanted to order the sidebar headings in `docs/guides`, you would need a `_meta.json` file in the `docs/guides` directory:
 
-```markdown "_meta.json"
+```
 .
 ├── src/
-│ └── content/
-│ └── docs/
-│ ├── \_meta.json
-│ ├── getting-started.md
-│ ├── installation.md
-│ ├── introduction.md
-│ └── guides/
-│ ├── \_meta.json
-│ ├── page1.md
-│ └── page2.md
+│   └── content/
+│       └── docs/
+│           ├── _meta.json
+│           ├── getting-started.md
+│           ├── installation.md
+│           ├── introduction.md
+│           └── guides/
+│               ├── _meta.json
+│               ├── page1.md
+│               └── page2.md
 ├── package.json
 └── astro.config.mjs
 ```
