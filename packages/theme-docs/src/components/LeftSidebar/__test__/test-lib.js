@@ -1,5 +1,5 @@
 import path from "node:path";
-import { titleize } from "inflection";
+import { titlelise } from "pulsar/internal";
 
 /**
  * @param {string} slug
@@ -9,7 +9,7 @@ export function mockMarkdownFile(slug) {
   const baseName = path.basename(slug, path.extname(slug));
   return {
     slug,
-    headings: [titleize(baseName.replaceAll("-", "_"))],
+    headings: [titlelise(baseName.replaceAll("-", "_"))],
     filepath: `${slug}.md`,
   };
 }

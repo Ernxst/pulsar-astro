@@ -80,7 +80,8 @@
   },
   "peerDependencies": {
     "astro": "^2.4.0",
-    "pulsar": "^0.0.1"
+    "pulsar": "^0.0.1",
+    "zod": "^3.17.4"
   },
   "peerDependenciesMeta": {
     "astro": {
@@ -88,12 +89,10 @@
     },
     "pulsar": {
       "optional": false
+    },
+    "zod": {
+      "optional": false
     }
-  },
-  "dependencies": {
-    "@napi-rs/simple-git": "0.1.8",
-    "inflection": "2.0.1",
-    "zod": "3.21.4"
   },
   "devDependencies": {
     "@pulsar/tsconfig": "workspace:*",

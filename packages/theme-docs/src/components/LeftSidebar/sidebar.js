@@ -1,12 +1,5 @@
-import { createRequire } from "node:module";
-import { Lang, formatUrl } from "pulsar/internal";
+import { Lang, formatUrl, titlelise } from "pulsar/internal";
 import { getValue, setValue, sortFilesByMeta, sortSidebar } from "./util";
-
-const require = createRequire(import.meta.url);
-/**
- * @typeof import("inflection")
- */
-const inflection = require("inflection");
 
 /**
  * @typedef {object} Section
@@ -75,7 +68,7 @@ export function useSidebar(mdFiles, pathname, metaJsons = {}) {
       const url = `${baseUrl}/${segments.slice(0, i + 1).join("/")}`;
       const title = isLast
         ? headings[0]
-        : inflection.titleize(segment.replaceAll("-", "_"));
+        : titlelise(segment.replaceAll("-", "_"));
 
       addSection(dotPath, segment, {
         title,

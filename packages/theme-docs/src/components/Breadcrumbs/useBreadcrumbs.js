@@ -1,6 +1,4 @@
-/* eslint-disable-next-line import/no-named-default */
-import { default as inflection } from "inflection";
-import { Lang } from "pulsar/internal";
+import { Lang, titlelise } from "pulsar/internal";
 import { getValue } from "../LeftSidebar/util";
 
 /**
@@ -24,7 +22,7 @@ export function useBreadcrumbs(url, sidebar, collectionName) {
 
   if (segments[0] === collectionName) {
     result.push({
-      title: inflection.titleize(segments[0]),
+      title: titlelise(segments[0]),
       url: `/${segments[0]}`,
     });
     segments.shift();

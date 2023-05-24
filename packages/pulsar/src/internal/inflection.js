@@ -12,6 +12,6 @@ import { titleize } from "inflection";
  * @param {string} str
  * @internal
  */
-export function titelise(str) {
+export function titlelise(str) {
   return titleize(str);
 }
