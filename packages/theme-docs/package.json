@@ -18,7 +18,8 @@
     "astro",
     "docs",
     "ssg",
-    "ssr"
+    "ssr",
+    "astro-integration"
   ],
   "sideEffects": false,
   "publishConfig": {

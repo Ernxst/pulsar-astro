@@ -1,22 +1,39 @@
 # Getting Started
 
+## Prerequisites
+
+- [Node.js](https://nodejs.org/en) version `16.12.0` or higher
+- [Astro](https://docs.astro.build/en/install/auto/) version `2.4.0` or higher
+
 ## Installation
 
-Pulsar is essentially just npm libraries which you add to your project.
+Pulsar is essentially just npm libraries which you add to your project. You can add Pulsar automatically as an Astro integration using the Astro CLI:
 
-### Prerequisites
+```bash
+npx astro add @pulsar/docs
+```
 
-- [Node.js]() version 16 or higher
+Or, if you prefer to do it manually:
 
-### Configuration
+```bash
+npm install pulsar @pulsar/docs
+```
 
-Next, create a `pulsar.config.ts` file at the root of your project:
+And add it to your Astro integrations:
 
-```js filename=pulsar.config.ts
-import { defineConfig } from "@pulsar/docs";
+```js filename="astro.config.mjs"
+import { defineConfig } from "astro/config";
+import docs from "@pulsar/docs";
 
+// https://astro.build/config
 export default defineConfig({
-  // ...
+  // ... Your other config
+  integrations: [
+    // ... Your other integrations
+    docs({
+      // ... Pulsar docs Config
+    }),
+  ],
 });
 ```
 
@@ -24,7 +41,7 @@ See the [Configuration API Reference]() for more information on supported option
 
 ### Defining a Collection
 
-Pulsar leverages Astro's [Content Collections]() You define collections like you would any Content Collection.
+Pulsar leverages Astro's [Content Collections](https://docs.astro.build/en/guides/content-collections/) You define collections like you would any Content Collection.
 However, your schema must, at least, extend the `PulsarContentCollection` schema exported by `@pulsar/docs`. For example,
 if you wanted a `docs` collection, you `src/content/config.ts` would look something like this:
 
