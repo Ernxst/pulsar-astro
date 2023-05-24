@@ -79,7 +79,9 @@ export async function useEditUrl(options) {
     const [owner, repo] = pathname.split("/").filter(Boolean);
 
     const branch = await repository.branchName();
+    console.log("repo", { branch });
     const joined = path.join(owner, repo, "edit", branch, relativeToRepoRoot);
+    console.log({ origin, joined });
 
     return `${origin}/${joined}`;
   }
