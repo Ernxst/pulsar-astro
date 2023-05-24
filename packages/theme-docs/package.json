@@ -96,10 +96,10 @@
   },
   "devDependencies": {
     "@pulsar/tsconfig": "workspace:*",
-    "@vitest/coverage-istanbul": "0.31.0",
-    "publint": "0.1.11",
+    "@vitest/coverage-istanbul": "0.31.1",
+    "publint": "0.1.12",
     "typescript": "5.0.4",
     "vite": "4.3.8",
-    "vitest": "0.31.0"
+    "vitest": "0.31.1"
   }
 }

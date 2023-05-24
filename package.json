@@ -28,18 +28,18 @@
     "version": "changeset version && pnpm install --no-frozen-lockfile && pnpm run format"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^0.38.6",
+    "@antfu/eslint-config": "0.39.3",
     "@changesets/changelog-github": "^0.4.8",
     "@changesets/cli": "^2.26.1",
     "@commitlint/cli": "^17.6.3",
     "@commitlint/config-conventional": "^17.6.3",
-    "eslint": "^8.40.0",
+    "eslint": "8.41.0",
     "eslint-plugin-astro": "^0.27.0",
     "husky": "^8.0.3",
     "nano-staged": "^0.8.0",
     "prettier": "^2.8.8",
-    "prettier-plugin-astro": "0.8.1",
-    "turbo": "1.9.6"
+    "prettier-plugin-astro": "0.9.0",
+    "turbo": "1.9.9"
   },
   "nano-staged": {
     "*.{html,css,ts,js,astro,json,md,yml,yaml}": [
