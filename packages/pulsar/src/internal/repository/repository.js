@@ -52,11 +52,33 @@ export class PulsarRepository {
   }
 
   async branchName() {
-    const branch = await this.repo.branch();
-    console.log(branch);
-    console.log(await this.repo.branchLocal());
-    const [branchName] = branch.all;
-    return branchName.includes("/") ? branchName.split("/")[1] : branchName;
+    const root = this.root();
+    const headsDir = join(root, ".git/refs/heads");
+    const remotesDir = join(root, ".git/refs/remotes");
+
+    try {
+      const branchNames = fs.readdirSync(headsDir);
+
+      const remoteDirs = fs.readdirSync(remotesDir);
+      console.log({ remoteDirs, branchNames });
+      remoteDirs.forEach((remote) => {
+        const idx = branchNames.indexOf(remote);
+        if (idx > -1) branchNames.splice(idx, 1);
+
+        const remoteBranchesDir = join(remotesDir, remote);
+        if (fs.statSync(remoteBranchesDir).isDirectory()) {
+          const remoteFiles = fs.readdirSync(remoteBranchesDir);
+          console.log({ remoteFiles });
+          branchNames.push(...remoteFiles);
+        }
+      });
+
+      console.log("done", { branchNames });
+      return branchNames.at(-1);
+    } catch (error) {
+      console.error("Error:", error);
+      return [];
+    }
   }
 
   /**
