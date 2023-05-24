@@ -28,12 +28,7 @@ export function useBreadcrumbs(url, sidebar, collectionName) {
     segments.shift();
   }
 
-  if (Lang.isCode(segments[0])) {
-    const languageCode = segments[0];
-    if (result[0]) result[0].url += `/${languageCode}`;
-
-    segments.shift();
-  }
+  if (Lang.isCode(segments[0])) segments.shift();
 
   let dotPath = "";
 
