@@ -1,4 +1,5 @@
 ---
+import { formatUrl } from "pulsar/internal";
 import AccordionItem from "../ui/Accordion/AccordionItem.astro";
 import SidebarSectionChildren from "./SidebarSectionChildren.astro";
 import SidebarSectionHeading from "./SidebarSectionHeading.astro";
@@ -12,7 +13,7 @@ export interface Props {
 
 const { title, url, children, depth } = Astro.props;
 
-const active = Astro.url.pathname === url;
+const active = url ? formatUrl(Astro.url.pathname) === formatUrl(url) : false;
 const isRoot = depth === 0;
 const isIdented = depth > 1;
 const isOpen = depth < 2;
