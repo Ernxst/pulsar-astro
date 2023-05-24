@@ -1,11 +1,9 @@
 ---
-import { getLangFromPathname } from "../../lib/util";
+import { Lang, PulsarRepository, formatUrl } from "pulsar/internal";
 import type { PulsarCollectionEntry } from "..";
 import Show from "../../components/ui/Show.astro";
 import Timestamp from "../../components/ui/Timestamp.astro";
 import type { Page, PulsarDocsConfig } from "../../config";
-import { getLastUpdatedDate } from "../../lib/github";
-import { formatUrl } from "./lib";
 
 export interface Props {
   pageCollection: PulsarCollectionEntry<Page>;
@@ -16,10 +14,11 @@ const { pageCollection, siteConfig } = Astro.props;
 const { collection, id: relativeToProject } = pageCollection;
 
 const filepath = formatUrl(`/src/content/${collection}/${relativeToProject}`);
-const lastUpdated = await getLastUpdatedDate(filepath);
+const repo = new PulsarRepository();
+const lastUpdated = await repo.getLastUpdatedDate(filepath);
 
 const { pathname } = Astro.url;
-const locale = getLangFromPathname(pathname) ?? siteConfig.site.defaultLocale;
+const locale = Lang.fromPathname(pathname) ?? siteConfig.site.defaultLocale;
 ---
 
 <Show when={lastUpdated}>

@@ -1,6 +1,5 @@
 import { createRequire } from "node:module";
-import { formatUrl } from "../../layouts/PulsarPage/lib";
-import { isLanguageCode } from "../../lib/util";
+import { Lang, formatUrl } from "pulsar/internal";
 import { getValue, setValue, sortFilesByMeta, sortSidebar } from "./util";
 
 const require = createRequire(import.meta.url);
@@ -57,7 +56,7 @@ export function useSidebar(mdFiles, pathname, metaJsons = {}) {
     const [lang, ...segments] = slug.split("/").filter(Boolean);
 
     let baseUrl = pathname;
-    if (isLanguageCode(lang)) baseUrl += `/${lang}`;
+    if (Lang.isCode(lang)) baseUrl += `/${lang}`;
     else segments.unshift(lang);
 
     let dotPath = "";

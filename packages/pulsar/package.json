@@ -24,23 +24,30 @@
   },
   "exports": {
     ".": {
-      "types": "./src/index.d.ts",
-      "import": "./src/index.js"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./internal": {
+      "types": "./dist/internal/index.d.ts",
+      "import": "./dist/internal/index.js"
     },
     "./package.json": "./package.json"
   },
-  "main": "src/index.js",
-  "module": "src/index.js",
-  "types": "src/index.d.ts",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
   "typesVersions": {
     "*": {
       ".": [
-        "./src/index.d.ts"
+        "./dist/index.d.ts"
+      ],
+      "internal": [
+        "./dist/internal/index.d.ts"
       ]
     }
   },
   "files": [
-    "src",
+    "dist",
     "README.md"
   ],
   "engines": {
@@ -49,24 +56,33 @@
   },
   "scripts": {
     "------------------------------------------------------------------------------": "",
-    "build": "publint",
+    "build": "tsup && publint",
     "-------------------------------------------------------------------------------": "",
     "typecheck": "tsc --noEmit",
     "---------------------------------------------------------------------------------": "",
     "test": "vitest run"
   },
   "peerDependencies": {
-    "astro": "^2.4.0"
+    "astro": "^2.4.0",
+    "zod": "^3.17.4"
   },
   "peerDependenciesMeta": {
     "astro": {
       "optional": false
+    },
+    "zod": {
+      "optional": false
     }
+  },
+  "dependencies": {
+    "inflection": "2.0.1",
+    "simple-git": "3.18.0"
   },
   "devDependencies": {
     "@pulsar/tsconfig": "workspace:*",
     "@vitest/coverage-istanbul": "0.31.0",
     "publint": "0.1.11",
+    "tsup": "6.7.0",
     "typescript": "5.0.4",
     "vitest": "0.31.0"
   }

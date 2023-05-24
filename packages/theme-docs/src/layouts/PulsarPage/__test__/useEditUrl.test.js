@@ -3,8 +3,8 @@ import { useEditUrl } from "../lib";
 
 describe("useEditUrl", () => {
   describe("With editInGitHub set to false", () => {
-    test("should return null", () => {
-      const editUrl = useEditUrl({
+    test("should return null", async () => {
+      const editUrl = await useEditUrl({
         siteConfig: {
           repositories: {
             project: { url: "some-url" },
@@ -22,8 +22,8 @@ describe("useEditUrl", () => {
   });
 
   describe("With no project or documentation repository", () => {
-    test("should return null", () => {
-      const editUrl = useEditUrl({
+    test("should return null", async () => {
+      const editUrl = await useEditUrl({
         siteConfig: {
           repositories: {},
         },
@@ -39,8 +39,8 @@ describe("useEditUrl", () => {
   });
 
   describe("With a collection entry used in a page subdirectory of the same name", () => {
-    test("should return the correct github url", () => {
-      const editUrl = useEditUrl({
+    test("should return the correct github url", async () => {
+      const editUrl = await useEditUrl({
         siteConfig: {
           repositories: {
             project: { url: "https://github.com/owner/repo" },
@@ -60,8 +60,8 @@ describe("useEditUrl", () => {
   });
 
   describe("With a collection entry used in a page subdirectory of a different name", () => {
-    test("should return the correct github url", () => {
-      const editUrl = useEditUrl({
+    test("should return the correct github url", async () => {
+      const editUrl = await useEditUrl({
         siteConfig: {
           repositories: {
             project: { url: "https://github.com/owner/repo" },
@@ -81,8 +81,8 @@ describe("useEditUrl", () => {
   });
 
   describe("With a collection entry used at the root of the site", () => {
-    test("should return the correct github url", () => {
-      const editUrl = useEditUrl({
+    test("should return the correct github url", async () => {
+      const editUrl = await useEditUrl({
         siteConfig: {
           repositories: {
             project: { url: "https://github.com/owner/repo" },
@@ -102,8 +102,8 @@ describe("useEditUrl", () => {
   });
 
   describe("With a custom docs repository", () => {
-    test("should return the correct github url", () => {
-      const editUrl = useEditUrl({
+    test("should return the correct github url", async () => {
+      const editUrl = await useEditUrl({
         siteConfig: {
           repositories: {
             documentation: { url: "https://github.com/owner/repo" },

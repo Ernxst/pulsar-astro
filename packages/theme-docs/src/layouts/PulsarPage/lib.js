@@ -1,27 +1,7 @@
 import path from "node:path";
-import { resolveRelativeToRepoRoot, useRepository } from "../../lib/github";
+import { PulsarRepository, formatUrl } from "pulsar/internal";
 
 /**
- * @param {string} url
- */
-export function formatUrl(url) {
-  const protocolIndex = url.indexOf("://");
-  let formattedUrl = url;
-
-  if (protocolIndex !== -1) {
-    const protocol = url.substring(0, protocolIndex + 3);
-    const restOfUrl = url.substring(protocolIndex + 3);
-    const replacedUrl = restOfUrl.replace(/\/\//g, "/");
-    formattedUrl = protocol + replacedUrl;
-  } else {
-    formattedUrl = url.replace(/\/\//g, "/");
-  }
-
-  return formattedUrl.replace(/\/$/, "");
-}
-
-/**
- *
  * @param {string} collection
  * @param {(collection: string) => Promise<import("..").PulsarCollectionEntry<import("../../config").Page>[]>} getCollection
  * @returns {Promise<import("src/components/LeftSidebar/sidebar").MarkdownFile[]>}
@@ -48,7 +28,6 @@ export async function collectionToMarkdownFiles(collection, getCollection) {
  */
 
 /**
- *
  * @param {PaginationOptions} options
  */
 export function usePagination(options) {
@@ -81,7 +60,7 @@ export function usePagination(options) {
 /**
  * @param {EditUrlOptions} options
  */
-export function useEditUrl(options) {
+export async function useEditUrl(options) {
   const { siteConfig, pageCollection } = options;
   const { collection, id: filePath, data: pageConfig } = pageCollection;
   const showLink = pageConfig.editInGitHub !== false;
@@ -93,14 +72,13 @@ export function useEditUrl(options) {
 
   if (docsUrl) {
     const relativePath = formatUrl(`/src/content/${collection}/${filePath}`);
-    const { repository } = useRepository();
-    const branch = repository.head().shorthand();
-    if (!branch) throw new Error("Could not find branch name");
-
-    const relativeToRepoRoot = resolveRelativeToRepoRoot(relativePath);
+    const repository = new PulsarRepository();
+    const relativeToRepoRoot = repository.relativeToRoot(relativePath);
 
     const { origin, pathname } = new URL(docsUrl);
     const [owner, repo] = pathname.split("/").filter(Boolean);
+
+    const branch = await repository.branchName();
     const joined = path.join(owner, repo, "edit", branch, relativeToRepoRoot);
 
     return `${origin}/${joined}`;

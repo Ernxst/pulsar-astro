@@ -1,7 +1,7 @@
 /* eslint-disable-next-line import/no-named-default */
 import { default as inflection } from "inflection";
+import { Lang } from "pulsar/internal";
 import { getValue } from "../LeftSidebar/util";
-import { isLanguageCode } from "../../lib/util";
 
 /**
  * @typedef {object} Breadcrumb
@@ -30,7 +30,7 @@ export function useBreadcrumbs(url, sidebar, collectionName) {
     segments.shift();
   }
 
-  if (isLanguageCode(segments[0])) {
+  if (Lang.isCode(segments[0])) {
     const languageCode = segments[0];
     if (result[0]) result[0].url += `/${languageCode}`;
 
