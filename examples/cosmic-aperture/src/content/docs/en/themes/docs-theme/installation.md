@@ -5,7 +5,7 @@
 Once you have installed Pulsar and setup your configuration files. Go ahead and create a new file
 in `src/pages/docs/[...slug].astro` with the following content:
 
-```astro filename=src/pages/docs/[...slug].astro
+```astro title=src/pages/docs/[...slug].astro
 ---
 import { PulsarPage } from "@pulsar/docs/layouts";
 import { CollectionEntry, getCollection } from "astro:content";

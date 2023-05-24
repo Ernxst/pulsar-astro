@@ -1,13 +1,12 @@
 import { defineConfig } from "astro/config";
-import tailwind from "@astrojs/tailwind";
 import docs from "@pulsar/docs";
+import siitemap from "@astrojs/sitemap";
 
 // https://astro.build/config
 export default defineConfig({
   site: "https://pulsarjs.dev",
   integrations: [
-    // TODO: Remove this and see how it affects styling
-    tailwind(),
+    siitemap(),
     docs({
       site: {
         siteTitle: "Pulsar",
