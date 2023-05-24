@@ -53,7 +53,7 @@ describe("_meta.json", () => {
     ];
 
     const metaJsons = {
-      "/en/_meta.json": mockMeta(["index", "app"]),
+      "/src/content/en/_meta.json": mockMeta(["index"]),
     };
 
     test("should generate sidebar in correct order", () => {
@@ -94,6 +94,65 @@ describe("_meta.json", () => {
         },
         { title: "One", children: {}, url: "/docs/en/subdir/one" },
         { title: "Another", children: {}, url: "/docs/en/subdir/another" },
+      ]);
+    });
+  });
+
+  describe("with a directory and a page in the same section", () => {
+    const mdFiles = [
+      mockMarkdownFile("en/guide/organise-files"),
+      mockMarkdownFile("en/guide/writing-markdown-files"),
+      mockMarkdownFile("en/guide/components/index"),
+      mockMarkdownFile("en/guide/components/accordion"),
+      mockMarkdownFile("en/guide/components/select"),
+      mockMarkdownFile("en/guide/components/theme-switcher"),
+    ];
+
+    const metaJsons = {
+      "../../../../examples/cosmic-aperture/src/content/docs/en/guide/_meta.json":
+        mockMeta(["components", "organise-files", "writing-markdown-files"]),
+    };
+
+    test("should generate sidebar in correct order", () => {
+      const sidebar = useSidebar(mdFiles, "/docs", metaJsons);
+      const flat = flattenSidebar(sidebar);
+
+      expect(flat).toEqual([
+        {
+          title: "Guide",
+          children: expect.any(Object),
+          url: undefined,
+        },
+        {
+          title: "Components",
+          children: expect.any(Object),
+          url: "/docs/en/guide/components",
+        },
+        {
+          title: "Theme Switcher",
+          children: {},
+          url: "/docs/en/guide/components/theme-switcher",
+        },
+        {
+          title: "Select",
+          children: {},
+          url: "/docs/en/guide/components/select",
+        },
+        {
+          title: "Accordion",
+          children: {},
+          url: "/docs/en/guide/components/accordion",
+        },
+        {
+          title: "Organise Files",
+          children: {},
+          url: "/docs/en/guide/organise-files",
+        },
+        {
+          title: "Writing Markdown Files",
+          children: {},
+          url: "/docs/en/guide/writing-markdown-files",
+        },
       ]);
     });
   });
@@ -157,6 +216,11 @@ describe("_meta.json", () => {
           url: "/docs/en/advanced",
         },
         {
+          title: "Usage",
+          children: {},
+          url: "/docs/en/advanced/usage",
+        },
+        {
           title: "Recipes",
           children: expect.any(Object),
           url: "/docs/en/advanced/recipes",
@@ -176,12 +240,6 @@ describe("_meta.json", () => {
           title: "Recipe 3",
           children: {},
           url: "/docs/en/advanced/recipes/recipe-3",
-        },
-        // No _meta.json file for /en/advanced so it goes straight to the end
-        {
-          title: "Usage",
-          children: {},
-          url: "/docs/en/advanced/usage",
         },
       ]);
     });
