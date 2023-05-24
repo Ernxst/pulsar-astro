@@ -11,7 +11,7 @@ import Pagination from "../components/Pagination/Pagination.astro";
 import type { Props as RightSidebarProps } from "../components/RightSidebar/RightSidebar.astro";
 import RightSidebar from "../components/RightSidebar/RightSidebar.astro";
 import Show from "../components/ui/Show.astro";
-import { MetaJsonSchema } from "../config/page/schemas";
+import { PulsarMeta } from "../config/page/schemas";
 
 export interface Props extends RightSidebarProps {
   pages: MarkdownFile[];
@@ -36,7 +36,7 @@ const metas = import.meta.glob("../../../../**/src/content/**/_meta.json", {
   import: "default",
 });
 
-const schema = z.record(MetaJsonSchema);
+const schema = z.record(PulsarMeta);
 const metaJsons = schema.parse(metas);
 
 const sidebar = useSidebar(pages, `/${collection}`, metaJsons);

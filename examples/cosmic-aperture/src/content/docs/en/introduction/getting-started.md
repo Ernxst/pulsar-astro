@@ -25,15 +25,15 @@ See the [Configuration API Reference]() for more information on supported option
 ### Defining a Collection
 
 Pulsar leverages Astro's [Content Collections]() You define collections like you would any Content Collection.
-However, your schema must, at least, extend the `PulsarCollection` schema exported by `@pulsar/docs`. For example,
+However, your schema must, at least, extend the `PulsarContentCollection` schema exported by `@pulsar/docs`. For example,
 if you wanted a `docs` collection, you `src/content/config.ts` would look something like this:
 
 ```typescript filename=src/content/config.ts
 import { defineCollection } from "astro:content";
-import { PulsarCollection } from "@pulsar/docs";
+import { PulsarContentCollection } from "@pulsar/docs";
 
 const docs = defineCollection({
-  schema: PulsarCollection,
+  schema: PulsarContentCollection,
 });
 
 export const collections = { docs };

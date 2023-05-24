@@ -1,3 +1,3 @@
 export { defineConfig } from "./app";
-export { definePulsarCollection } from "./page";
-export { PulsarCollection } from "./page/schemas";
+export { definePulsarCollection, PulsarContentCollection } from "./page";
+export { PulsarCollection, PulsarMeta } from "./page/schemas";

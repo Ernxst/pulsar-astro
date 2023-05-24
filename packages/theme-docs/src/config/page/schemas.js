@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { Pagination } from "../app/schemas";
 
-export const MetaJsonSchema = z.object({ sidebar: z.array(z.string()) });
+export const PulsarMeta = z.object({ sidebar: z.array(z.string()) });
 
 const PageBase = z.object({
   title: z.string().optional(),

@@ -1,8 +1,9 @@
 import { defineCollection } from "astro:content";
-import { PulsarCollection } from "@pulsar/docs";
+import { PulsarContentCollection } from "@pulsar/docs";
 
 const docs = defineCollection({
-  schema: PulsarCollection,
+  type: "content",
+  schema: PulsarContentCollection,
 });
 
 export const collections = { docs };
